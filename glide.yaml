@@ -1,9 +1,8 @@
-package: github.com/InnovaCo/broforce
+package: github.com/servehub/serve-server
 import:
-  - package: github.com/ghodss/yaml
+  - package: github.com/kulikov/go-sbus
   - package: github.com/satori/go.uuid
   - package: gopkg.in/alecthomas/kingpin.v2
-  - package: github.com/nats-io/go-nats
   - package: github.com/Jeffail/gabs
   - package: github.com/xanzy/go-gitlab
   - package: github.com/google/go-github/github
@@ -12,6 +11,5 @@ import:
   - package: github.com/nlopes/slack
   - package: github.com/andygrunwald/go-jira
   - package: github.com/valyala/fasttemplate
-  - package: github.com/satori/go.uuid
   - package: github.com/stretchr/testify
   - package: github.com/mhanygin/go-gocd

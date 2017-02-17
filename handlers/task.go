@@ -1,4 +1,4 @@
-package tasks
+package handlers
 
 import (
 	"fmt"

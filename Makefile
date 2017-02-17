@@ -9,7 +9,7 @@ test:
 
 build:
 	echo "==> Build binaries..."
-	go build -v -ldflags "-s -w -X main.version=${VERSION}" -o ${DEST}/broforce broforce.go
+	go build -v -ldflags "-s -w -X main.version=${VERSION}" -o ${DEST}/serve-server main.go
 
 install: test build
 	echo "==> Copy binaries to \$GOPATH/bin/..."
