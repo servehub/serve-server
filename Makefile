@@ -7,6 +7,14 @@ test:
 	echo "==> Running tests..."
 	go test -cover -v `go list ./... | grep -v /vendor/`
 
+deps:
+	echo "==> Install dependencies..."
+	go get -u github.com/jteeuwen/go-bindata/...
+
+build-configs:
+	echo "==> Build configs..."
+	${GOPATH}/bin/go-bindata -pkg config -o config/config.go config/*.yml
+
 build:
 	echo "==> Build binaries..."
 	go build -v -ldflags "-s -w -X main.version=${VERSION}" -o ${DEST}/serve-server main.go
