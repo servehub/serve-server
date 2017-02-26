@@ -1,5 +1,5 @@
-hash: a30a594d500bdabf0c50a56d592b26df3ac7195fe4c556c0db5d628e1ee4ef21
-updated: 2017-02-27T00:55:31.425103005+03:00
+hash: e774ad895cb2227d4255c39283833609904866100fcfbd01013403012337ac3d
+updated: 2017-02-27T01:05:01.071137988+03:00
 imports:
 - name: github.com/alecthomas/template
   version: a0175ee3bccc567396460bf5acd36800cb10c49c
@@ -7,8 +7,6 @@ imports:
   - parse
 - name: github.com/alecthomas/units
   version: 2efee857e7cfd4f3d0138cc3cbb1b4966962b93a
-- name: github.com/andygrunwald/go-jira
-  version: 3a142b6278edca7d9d52de0bfdcd300d78230b5d
 - name: github.com/cenk/backoff
   version: b02f2bbce11d7ea6b97f282ef1771b0fe2f65ef3
 - name: github.com/cenkalti/backoff
@@ -17,10 +15,6 @@ imports:
   version: 7824417a424b65227be8ac9b14d545a7f3e6c3f0
 - name: github.com/ghodss/yaml
   version: 04f313413ffd65ce25f2541bfd2b2ceec5c0908c
-- name: github.com/google/go-github
-  version: 9be6ce168fa69a3cc2db27a776950a42d18c2ae0
-  subpackages:
-  - github
 - name: github.com/hashicorp/consul
   version: cbbbf5ee39f5c6c90f211ee22cccf0ae3eb852e2
   subpackages:
@@ -41,10 +35,6 @@ imports:
 - name: github.com/mattn/go-isatty
   version: dda3de49cbfcec471bd7a70e6cc01fcc3ff90109
   repo: https://github.com/mattn/go-isatty
-- name: github.com/mhanygin/go-gocd
-  version: 9d3ee0ab515ce5c744904c2fdac193e1f4fc12f9
-- name: github.com/nlopes/slack
-  version: 6519657c021b7add19c4ef48220140cca0b1657b
 - name: github.com/satori/go.uuid
   version: b061729afc07e77a8aa4fad0a2fd840958f1942a
 - name: github.com/servehub/utils
@@ -54,12 +44,6 @@ imports:
   - mergemap
 - name: github.com/Sirupsen/logrus
   version: 7f4b1adc791766938c29457bed0703fb9134421a
-- name: github.com/stretchr/testify
-  version: 4d4bfba8f1d1027c4fdbe371823030df51419987
-- name: github.com/valyala/fasttemplate
-  version: dcecefd839c4193db0d35b88ec65b4c12d360ab0
-- name: github.com/xanzy/go-gitlab
-  version: 189ae0a841d3d0b3999ee2ae5d53203c3809a2bc
 - name: golang.org/x/sys
   version: e4594059fe4cde2daf423055a596c2cd1e6c9adf
   subpackages:
