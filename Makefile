@@ -13,9 +13,9 @@ deps:
 
 build-configs:
 	echo "==> Build configs..."
-	${GOPATH}/bin/go-bindata -pkg config -o config/config.go config/*.yml
+	${GOPATH}/bin/go-bindata -pkg config -o config/reference.go config/*.yml
 
-build:
+build: build-configs
 	echo "==> Build binaries..."
 	go build -v -ldflags "-s -w -X main.version=${VERSION}" -o ${DEST}/serve-server main.go
 

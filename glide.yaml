@@ -3,11 +3,11 @@ import:
   - package: github.com/kulikov/go-sbus
   - package: github.com/satori/go.uuid
   - package: gopkg.in/alecthomas/kingpin.v2
-  - package: github.com/Jeffail/gabs
   - package: github.com/xanzy/go-gitlab
   - package: github.com/google/go-github/github
   - package: github.com/hashicorp/consul
   - package: github.com/Sirupsen/logrus
+  - package: github.com/cenk/backoff
   - package: github.com/nlopes/slack
   - package: github.com/andygrunwald/go-jira
   - package: github.com/valyala/fasttemplate

@@ -1,5 +1,10 @@
-test:
-  one: 1
 
-new:
-  two: 2
+handlers:
+  serve-commands:
+    serve-path: serve
+
+  consul-check-outdated:
+    prefix: "services/outdated/"
+    check-interval: 15s
+    address:
+      - consul.local:8500

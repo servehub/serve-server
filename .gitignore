@@ -3,4 +3,4 @@
 /vendor/
 config*.yml
 *.log
-/config/config.go
+/config/reference.go
