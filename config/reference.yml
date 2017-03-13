@@ -2,9 +2,10 @@
 handlers:
   serve-commands:
     serve-path: serve
+    consul: consul.local:8500
+    service-data-prefix: "services/data/"
 
   consul-check-outdated:
     prefix: "services/outdated/"
     check-interval: 15s
-    address:
-      - consul.local:8500
+    consul: consul.local:8500

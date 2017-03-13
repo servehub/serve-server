@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/Sirupsen/logrus"
-	consul "github.com/hashicorp/consul/api"
+	consulApi "github.com/hashicorp/consul/api"
 	"github.com/kulikov/go-sbus"
 
 	"github.com/servehub/serve-server/handler"
@@ -23,9 +23,9 @@ type ConsulCheckOutdated struct{}
 // Переодически ищем в consul kv запись с outdated сервисом,
 // если находим и время endOfLife пришло — удаляем этот сервис
 func (_ ConsulCheckOutdated) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entry) error {
-	cf := consul.DefaultConfig()
-	cf.Address = fmt.Sprintf("%s", conf.Path("address").Data())
-	client, err := consul.NewClient(cf)
+	cf := consulApi.DefaultConfig()
+	cf.Address = fmt.Sprintf("%s", conf.Path("consul").Data())
+	consul, err := consulApi.NewClient(cf)
 	if err != nil {
 		return err
 	}
@@ -41,7 +41,7 @@ func (_ ConsulCheckOutdated) Run(bus *sbus.Sbus, conf *gabs.Container, log *logr
 	for range time.Tick(checkInterval) {
 		log.Debugln("List", keyPrefix)
 
-		pairs, _, err := client.KV().List(keyPrefix, nil)
+		pairs, _, err := consul.KV().List(keyPrefix, nil)
 		if err != nil {
 			log.WithError(err).Error("Error on list outdated on consul!")
 			continue
@@ -74,7 +74,7 @@ func (_ ConsulCheckOutdated) Run(bus *sbus.Sbus, conf *gabs.Container, log *logr
 					}
 
 					log.Infof("Service `%s` deleted! Remove outdated key...", name)
-					_, err := client.KV().Delete(item.Key, nil)
+					_, err := consul.KV().Delete(item.Key, nil)
 					return err
 				}, time.Minute*3)
 			}
