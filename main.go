@@ -34,6 +34,7 @@ func main() {
 	kingpin.FatalIfError(err, "Error on load reference config")
 
 	logrus.SetLevel(logrus.DebugLevel)
+	logrus.SetFormatter(&logrus.TextFormatter{FullTimestamp: true})
 	log := logrus.NewEntry(logrus.StandardLogger())
 
 	bus := sbus.New(transports.NewInMemory(log), log)

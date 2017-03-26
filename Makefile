@@ -1,4 +1,4 @@
-VERSION?="0.1.0"
+VERSION?="0.2.0"
 DEST?=./bin
 
 default: install
@@ -22,3 +22,6 @@ build: build-configs
 install: test build
 	echo "==> Copy binaries to \$GOPATH/bin/..."
 	cp ${DEST}/* ${GOPATH}/bin/
+
+dist:
+	GOOS=linux make build

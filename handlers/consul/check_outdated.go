@@ -67,7 +67,7 @@ func (_ ConsulCheckOutdated) Run(bus *sbus.Sbus, conf *gabs.Container, log *logr
 				name := strings.TrimPrefix(item.Key, keyPrefix)
 				log.WithField("json", string(item.Value)).Infoln("Found outdated service:", name)
 
-				bus.Request("serve-undeploy-service", map[string]string{"name": name}, func(resp sbus.Message) error {
+				bus.Request("serve-undeploy", map[string]string{"name": name}, func(resp sbus.Message) error {
 					if resp.Data != nil {
 						log.Errorf("Error undeploy service: %s", resp.Data)
 						return nil
@@ -85,5 +85,5 @@ func (_ ConsulCheckOutdated) Run(bus *sbus.Sbus, conf *gabs.Container, log *logr
 }
 
 type outdatedService struct {
-	EndOfLife string `json:"endOfLife"`
+	EndOfLife string `json:"endOfLife"` // todo: change EndOfLife type to string in serve.release plugin
 }

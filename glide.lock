@@ -1,5 +1,5 @@
-hash: e774ad895cb2227d4255c39283833609904866100fcfbd01013403012337ac3d
-updated: 2017-02-27T01:05:01.071137988+03:00
+hash: 9ffd9c6c22406e1454561a3c2fb5b60e6acddc338a633320b5454183341a8589
+updated: 2017-03-26T23:14:52.324876818+03:00
 imports:
 - name: github.com/alecthomas/template
   version: a0175ee3bccc567396460bf5acd36800cb10c49c
@@ -8,44 +8,48 @@ imports:
 - name: github.com/alecthomas/units
   version: 2efee857e7cfd4f3d0138cc3cbb1b4966962b93a
 - name: github.com/cenk/backoff
-  version: b02f2bbce11d7ea6b97f282ef1771b0fe2f65ef3
+  version: 3db60c813733fce657c114634171689bbf1f8dee
 - name: github.com/cenkalti/backoff
-  version: b02f2bbce11d7ea6b97f282ef1771b0fe2f65ef3
+  version: 3db60c813733fce657c114634171689bbf1f8dee
 - name: github.com/fatih/color
-  version: 7824417a424b65227be8ac9b14d545a7f3e6c3f0
+  version: 9131ab34cf20d2f6d83fdc67168a5430d1c7dc23
 - name: github.com/ghodss/yaml
   version: 04f313413ffd65ce25f2541bfd2b2ceec5c0908c
 - name: github.com/hashicorp/consul
-  version: cbbbf5ee39f5c6c90f211ee22cccf0ae3eb852e2
+  version: 523c0c54fec686d1331f628b0fe7cd15a1a23d50
   subpackages:
   - api
 - name: github.com/hashicorp/go-cleanhttp
   version: 3573b8b52aa7b37b9358d966a898feb387f62437
 - name: github.com/hashicorp/serf
-  version: 838c422c419776dd868ade08da6b11be7a71bf99
+  version: 19f2c401e122352c047a84d6584dd51e2fb8fcc4
   subpackages:
   - coordinate
 - name: github.com/kulikov/go-sbus
-  version: d6554f440da66df08648abf8054b91d274893924
+  version: 0f0b105cc7da7018f4e90d5d5e2c19931aea36ac
   subpackages:
   - transports
 - name: github.com/mattn/go-colorable
   version: 5411d3eea5978e6cdc258b30de592b60df6aba96
   repo: https://github.com/mattn/go-colorable
 - name: github.com/mattn/go-isatty
-  version: dda3de49cbfcec471bd7a70e6cc01fcc3ff90109
+  version: 57fdcb988a5c543893cc61bce354a6e24ab70022
   repo: https://github.com/mattn/go-isatty
 - name: github.com/satori/go.uuid
   version: b061729afc07e77a8aa4fad0a2fd840958f1942a
 - name: github.com/servehub/utils
-  version: 50f0a372f0befce6c85e0dcba7e991f9da8d3f15
+  version: cd15244e0bf528087d3e5052f72816ef0449d9b7
   subpackages:
   - gabs
   - mergemap
 - name: github.com/Sirupsen/logrus
   version: 7f4b1adc791766938c29457bed0703fb9134421a
+- name: golang.org/x/net
+  version: e90d6d0afc4c315a0d87a568ae68577cc15149a0
+  subpackages:
+  - context
 - name: golang.org/x/sys
-  version: e4594059fe4cde2daf423055a596c2cd1e6c9adf
+  version: 075e574b89e4c2d22f2286a7e2b919519c6f3547
   subpackages:
   - unix
 - name: gopkg.in/alecthomas/kingpin.v2
