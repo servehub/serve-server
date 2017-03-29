@@ -11,6 +11,7 @@ import (
 	"github.com/kulikov/go-sbus"
 
 	"github.com/servehub/serve-server/handler"
+	"github.com/servehub/utils"
 	"github.com/servehub/utils/gabs"
 )
 
@@ -68,14 +69,8 @@ func (_ ConsulCheckOutdated) Run(bus *sbus.Sbus, conf *gabs.Container, log *logr
 				log.WithField("json", string(item.Value)).Infoln("Found outdated service:", name)
 
 				bus.Request("serve-undeploy", map[string]string{"name": name}, func(resp sbus.Message) error {
-					if resp.Data != nil {
-						log.Errorf("Error undeploy service: %s", resp.Data)
-						return nil
-					}
-
 					log.Infof("Service `%s` deleted! Remove outdated key...", name)
-					_, err := consul.KV().Delete(item.Key, nil)
-					return err
+					return utils.DelConsulKv(consul, item.Key)
 				}, time.Minute*3)
 			}
 		}

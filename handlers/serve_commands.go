@@ -49,8 +49,6 @@ func (_ ServeCommands) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Ent
 		}
 
 		for _, item := range pairs {
-			log.Info(item.Key, string(item.Value))
-
 			// validate and reserealize json without spaces
 			js := make(map[string]interface{})
 			if err := json.Unmarshal(item.Value, &js); err != nil {

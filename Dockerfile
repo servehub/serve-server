@@ -1,11 +1,13 @@
 FROM alpine
 
-ADD bin /app
+RUN apk add --update bash && rm -rf /var/cache/apk/*
 
 WORKDIR /app
 
 EXPOSE 80
 
 VOLUME ["/etc/serve", "/usr/local/bin/serve"]
+
+ADD bin /app
 
 CMD ["/app/serve-server", "--config=/etc/serve/serve-server.yml"]
