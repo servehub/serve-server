@@ -1,6 +1,7 @@
 package main
 
 import (
+	golog "log"
 	"os"
 	"os/signal"
 	"syscall"
@@ -36,6 +37,9 @@ func main() {
 	logrus.SetLevel(logrus.DebugLevel)
 	logrus.SetFormatter(&logrus.TextFormatter{FullTimestamp: true})
 	log := logrus.NewEntry(logrus.StandardLogger())
+
+	golog.SetFlags(0)
+	golog.SetOutput(log.Logger.Writer())
 
 	bus := sbus.New(transports.NewInMemory(log), log)
 
