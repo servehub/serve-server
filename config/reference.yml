@@ -1,3 +1,6 @@
+logging:
+  level: debug
+  formatter: text
 
 handlers:
   serve-commands:

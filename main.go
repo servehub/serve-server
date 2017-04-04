@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	golog "log"
 	"os"
 	"os/signal"
@@ -34,8 +35,18 @@ func main() {
 	err = conf.WithFallbackYaml(config.MustAsset("config/reference.yml"))
 	kingpin.FatalIfError(err, "Error on load reference config")
 
-	logrus.SetLevel(logrus.DebugLevel)
-	logrus.SetFormatter(&logrus.TextFormatter{FullTimestamp: true})
+	level, err := logrus.ParseLevel(fmt.Sprintf("%v", conf.Path("logging.level").Data()))
+	kingpin.FatalIfError(err, "Unknown logging level: %v", conf.Path("logging.level").Data())
+
+	logrus.SetLevel(level)
+
+	switch fmt.Sprintf("%v", conf.Path("logging.formatter").Data()) {
+	case "json":
+		logrus.SetFormatter(&logrus.JSONFormatter{DisableTimestamp: true})
+	default:
+		logrus.SetFormatter(&logrus.TextFormatter{FullTimestamp: true})
+	}
+
 	log := logrus.NewEntry(logrus.StandardLogger())
 
 	golog.SetFlags(0)
@@ -59,12 +70,12 @@ func main() {
 			hndr := handler.HandlerRegestry.Get(handlerName)
 
 			go func(hndr handler.Handler, handlerConf *gabs.Container, log *logrus.Entry, handlerName string) {
-				log.WithField("config", handlerConf).Infof("Starting `%s`...", handlerName)
+				log.WithField("config", handlerConf.Data()).Infof("Starting `%s`...", handlerName)
 
 				err := backoff.RetryNotify(func() error {
 					return hndr.Run(bus, handlerConf, log)
 				}, backoff.NewExponentialBackOff(), func(err error, delay time.Duration) {
-					log.WithError(err).Errorf("Error on initialize handler `%s`. Retry after %s...", handlerName, delay)
+					log.WithError(err).Errorf("Error in handler `%s`. Retry after %s...", handlerName, delay)
 				})
 
 				if err != nil {
