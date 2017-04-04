@@ -40,8 +40,6 @@ func (_ ConsulCheckOutdated) Run(bus *sbus.Sbus, conf *gabs.Container, log *logr
 	log.Infof("Connecting to consul://%s", cf.Address)
 
 	for range time.Tick(checkInterval) {
-		log.Debugln("List", keyPrefix)
-
 		pairs, _, err := consul.KV().List(keyPrefix, nil)
 		if err != nil {
 			log.WithError(err).Error("Error on list outdated on consul!")
