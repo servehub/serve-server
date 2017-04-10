@@ -12,3 +12,6 @@ handlers:
     prefix: "services/outdated/"
     check-interval: 15s
     consul: 127.0.0.1:8500
+
+  webhooks-server:
+    listen: ":8088"

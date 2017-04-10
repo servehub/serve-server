@@ -7,3 +7,4 @@ import:
   - package: github.com/hashicorp/consul
   - package: github.com/Sirupsen/logrus
   - package: github.com/cenk/backoff
+  - package: github.com/pressly/chi

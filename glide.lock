@@ -1,5 +1,5 @@
-hash: 9ffd9c6c22406e1454561a3c2fb5b60e6acddc338a633320b5454183341a8589
-updated: 2017-03-26T23:14:52.324876818+03:00
+hash: 63e38ab58a4b92986509f49311f7a25b6cd6330a56e3ffe864ce1d644ce4e779
+updated: 2017-04-10T12:58:09.059238224+03:00
 imports:
 - name: github.com/alecthomas/template
   version: a0175ee3bccc567396460bf5acd36800cb10c49c
@@ -8,15 +8,15 @@ imports:
 - name: github.com/alecthomas/units
   version: 2efee857e7cfd4f3d0138cc3cbb1b4966962b93a
 - name: github.com/cenk/backoff
-  version: 3db60c813733fce657c114634171689bbf1f8dee
+  version: 5d150e7eec023ce7a124856b37c68e54b4050ac7
 - name: github.com/cenkalti/backoff
-  version: 3db60c813733fce657c114634171689bbf1f8dee
+  version: 5d150e7eec023ce7a124856b37c68e54b4050ac7
 - name: github.com/fatih/color
   version: 9131ab34cf20d2f6d83fdc67168a5430d1c7dc23
 - name: github.com/ghodss/yaml
-  version: 04f313413ffd65ce25f2541bfd2b2ceec5c0908c
+  version: 0ca9ea5df5451ffdf184b4428c902747c2c11cd7
 - name: github.com/hashicorp/consul
-  version: 523c0c54fec686d1331f628b0fe7cd15a1a23d50
+  version: 3ef7dde64c27e015c61be5e08c3ca55199726b1a
   subpackages:
   - api
 - name: github.com/hashicorp/go-cleanhttp
@@ -35,10 +35,12 @@ imports:
 - name: github.com/mattn/go-isatty
   version: 57fdcb988a5c543893cc61bce354a6e24ab70022
   repo: https://github.com/mattn/go-isatty
+- name: github.com/pressly/chi
+  version: 157587f33c258f3590967dfc7be2e75c0aa1cdf3
 - name: github.com/satori/go.uuid
   version: b061729afc07e77a8aa4fad0a2fd840958f1942a
 - name: github.com/servehub/utils
-  version: cd15244e0bf528087d3e5052f72816ef0449d9b7
+  version: 53728dc33b8e80f289afd2fcf558bb7ce1685364
   subpackages:
   - gabs
   - mergemap
@@ -55,5 +57,5 @@ imports:
 - name: gopkg.in/alecthomas/kingpin.v2
   version: e9044be3ab2a8e11d4e1f418d12f0790d57e8d70
 - name: gopkg.in/yaml.v2
-  version: a3f3340b5840cee44f372bddb5880fcbc419b46a
+  version: cd8b52f8269e0feb286dfeef29f8fe4d5b397e0b
 testImports: []
