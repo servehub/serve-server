@@ -1,5 +1,5 @@
-hash: 63e38ab58a4b92986509f49311f7a25b6cd6330a56e3ffe864ce1d644ce4e779
-updated: 2017-04-10T12:58:09.059238224+03:00
+hash: 1d17480b3f42c3e1104552fd48b7f75e57cfab373e93277cfa1352454821fae2
+updated: 2017-04-10T14:17:23.498262542+03:00
 imports:
 - name: github.com/alecthomas/template
   version: a0175ee3bccc567396460bf5acd36800cb10c49c
@@ -37,6 +37,10 @@ imports:
   repo: https://github.com/mattn/go-isatty
 - name: github.com/pressly/chi
   version: 157587f33c258f3590967dfc7be2e75c0aa1cdf3
+  subpackages:
+  - middleware
+- name: github.com/pressly/lg
+  version: 9f88ccf6568751e6ea32bce38d01a43af4cbb166
 - name: github.com/satori/go.uuid
   version: b061729afc07e77a8aa4fad0a2fd840958f1942a
 - name: github.com/servehub/utils

@@ -11,6 +11,7 @@ import (
 	"github.com/Sirupsen/logrus"
 	"github.com/kulikov/go-sbus"
 	"github.com/pressly/chi"
+	"github.com/pressly/chi/middleware"
 
 	"github.com/servehub/serve-server/handler"
 	"github.com/servehub/utils/gabs"
@@ -25,19 +26,12 @@ type WebhooksServer struct{}
 func (_ WebhooksServer) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entry) error {
 
 	r := chi.NewRouter()
+	r.Use(middleware.RealIP)
+	r.Use(middleware.RequestLogger(&StructuredLogger{log}))
+	r.Use(middleware.Recoverer)
 
-	r.Get("/*", func(w http.ResponseWriter, req *http.Request) {
-		io.WriteString(w, req.Method+" "+req.RequestURI+"\n")
-
-		for k, v := range req.Header {
-			io.WriteString(w, k+": "+strings.Join(v, "; ")+"\n")
-		}
-
-		io.WriteString(w, "\n\nHello, "+os.Getenv("SERVICE_NAME")+"!\n\n\n\n")
-	})
-
-	r.Post("/*", func(w http.ResponseWriter, req *http.Request) {
-		io.WriteString(w, req.Method+" "+req.RequestURI+"\n")
+	r.HandleFunc("/*", func(w http.ResponseWriter, req *http.Request) {
+		io.WriteString(w, req.Method+" "+req.RequestURI+"\n\n")
 
 		for k, v := range req.Header {
 			io.WriteString(w, k+": "+strings.Join(v, "; ")+"\n")
@@ -52,7 +46,5 @@ func (_ WebhooksServer) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 		io.WriteString(w, "\n\nHello, "+os.Getenv("SERVICE_NAME")+"!\n\n\n\n")
 	})
 
-	http.ListenAndServe(fmt.Sprintf("%v", conf.Path("listen").Data()), r)
-
-	return nil
+	return http.ListenAndServe(fmt.Sprintf("%v", conf.Path("listen").Data()), r)
 }

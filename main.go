@@ -42,7 +42,13 @@ func main() {
 
 	switch fmt.Sprintf("%v", conf.Path("logging.formatter").Data()) {
 	case "json":
-		logrus.SetFormatter(&logrus.JSONFormatter{DisableTimestamp: true})
+		logrus.SetFormatter(&logrus.JSONFormatter{
+			DisableTimestamp: true,
+			FieldMap: logrus.FieldMap{
+				logrus.FieldKeyMsg: "message",
+			},
+		})
+
 	default:
 		logrus.SetFormatter(&logrus.TextFormatter{FullTimestamp: true})
 	}

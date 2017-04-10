@@ -4,7 +4,7 @@ RUN apk add --update bash && rm -rf /var/cache/apk/*
 
 WORKDIR /app
 
-EXPOSE 80
+EXPOSE 8088
 
 VOLUME ["/etc/serve", "/usr/local/bin/serve"]
 
