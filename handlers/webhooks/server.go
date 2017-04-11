@@ -1,17 +1,16 @@
-package handlers
+package webhooks
 
 import (
 	"fmt"
-	"io"
 	"io/ioutil"
 	"net/http"
-	"os"
-	"strings"
+	"regexp"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/kulikov/go-sbus"
 	"github.com/pressly/chi"
 	"github.com/pressly/chi/middleware"
+	"github.com/pressly/chi/render"
 
 	"github.com/servehub/serve-server/handler"
 	"github.com/servehub/utils/gabs"
@@ -21,6 +20,8 @@ func init() {
 	handler.HandlerRegestry.Add("webhooks-server", &WebhooksServer{})
 }
 
+var webhookName = regexp.MustCompile("[^a-z\\d]+")
+
 type WebhooksServer struct{}
 
 func (_ WebhooksServer) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entry) error {
@@ -29,21 +30,28 @@ func (_ WebhooksServer) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 	r.Use(middleware.RealIP)
 	r.Use(middleware.RequestLogger(&StructuredLogger{log}))
 	r.Use(middleware.Recoverer)
+	r.Use(render.SetContentType(render.ContentTypeJSON))
 
-	r.HandleFunc("/*", func(w http.ResponseWriter, req *http.Request) {
-		io.WriteString(w, req.Method+" "+req.RequestURI+"\n\n")
+	secretKey := fmt.Sprintf("%v", conf.Path("secret-key").Data())
 
-		for k, v := range req.Header {
-			io.WriteString(w, k+": "+strings.Join(v, "; ")+"\n")
+	r.Post("/*", func(w http.ResponseWriter, req *http.Request) {
+		if req.URL.Query().Get("key") != secretKey {
+			http.Error(w, http.StatusText(403), 403)
+			return
 		}
 
 		body, _ := ioutil.ReadAll(req.Body)
 		defer req.Body.Close()
 
-		io.WriteString(w, "\n")
-		w.Write(body)
+		data, err := gabs.ParseJSON(body)
+		if err != nil {
+			http.Error(w, http.StatusText(400), 400)
+			return
+		}
 
-		io.WriteString(w, "\n\nHello, "+os.Getenv("SERVICE_NAME")+"!\n\n\n\n")
+		bus.Pub("receive-webhook-"+webhookName.ReplaceAllString(req.URL.Path[1:], "-"), data.Data())
+
+		w.WriteHeader(http.StatusAccepted)
 	})
 
 	return http.ListenAndServe(fmt.Sprintf("%v", conf.Path("listen").Data()), r)

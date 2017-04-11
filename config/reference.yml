@@ -3,15 +3,19 @@ logging:
   formatter: text
 
 handlers:
-  serve-commands:
-    serve-path: serve
+  serve-undeploy-service:
     consul: 127.0.0.1:8500
     service-data-prefix: "services/data/"
 
-  consul-check-outdated:
+  consul-remove-outdated:
     prefix: "services/outdated/"
     check-interval: 15s
     consul: 127.0.0.1:8500
 
   webhooks-server:
     listen: ":8088"
+    secret-key: "sdf87adfkj234g"
+
+  webhooks-bitbucket: {}
+
+  gocd-create-pipeline: {}

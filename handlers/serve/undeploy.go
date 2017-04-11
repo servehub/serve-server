@@ -1,4 +1,4 @@
-package handlers
+package serve
 
 import (
 	"encoding/json"
@@ -15,12 +15,12 @@ import (
 )
 
 func init() {
-	handler.HandlerRegestry.Add("serve-commands", &ServeCommands{})
+	handler.HandlerRegestry.Add("serve-undeploy-service", &ServeUndeployService{})
 }
 
-type ServeCommands struct{}
+type ServeUndeployService struct{}
 
-func (_ ServeCommands) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entry) error {
+func (_ ServeUndeployService) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entry) error {
 	cf := consulApi.DefaultConfig()
 	cf.Address = fmt.Sprintf("%s", conf.Path("consul").Data())
 	consul, err := consulApi.NewClient(cf)
@@ -29,7 +29,6 @@ func (_ ServeCommands) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Ent
 	}
 
 	dataPrefix := fmt.Sprintf("%s", conf.Path("service-data-prefix").Data())
-	servePath := fmt.Sprintf("%s", conf.Path("serve-path").Data())
 
 	bus.Sub("serve-undeploy", func(cmd sbus.Message) error {
 		log.Infoln("Receive", cmd)
@@ -59,7 +58,7 @@ func (_ ServeCommands) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Ent
 			pluginData := strings.Replace(string(str), "'", "\\'", -1)
 
 			names := strings.Split(item.Key, "/")
-			if err := utils.RunCmd("%s %s --plugin-data='%s'", servePath, names[len(names)-1], pluginData); err != nil {
+			if err := utils.RunCmd("serve %s --plugin-data='%s'", names[len(names)-1], pluginData); err != nil {
 				return err
 			}
 		}
@@ -68,9 +67,33 @@ func (_ ServeCommands) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Ent
 		return nil
 	})
 
+	bus.Sub("manifest-changed", func(cmd sbus.Message) error {
+		m := &manifestChanged{}
+		if err := cmd.Unmarshal(m); err != nil {
+			return fmt.Errorf("Error on unmarshal manifestChanged: %v", err)
+		}
+
+		if m.Purge {
+			return utils.RunCmd(
+				"serve deploy --manifest=%s --branch=%s --purge=true",
+				m.Manifest,
+				m.Branch,
+			)
+		}
+
+		return nil
+	})
+
 	return nil
 }
 
 type undeployCmd struct {
 	Name string `json:"name"`
+}
+
+type manifestChanged struct {
+	Manifest string `json:"manifest"`
+	Repo     string `json:"repo"`
+	Branch   string `json:"branch"`
+	Purge    bool   `json:"purge,string"`
 }

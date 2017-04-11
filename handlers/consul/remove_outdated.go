@@ -1,4 +1,4 @@
-package handlers
+package consul
 
 import (
 	"encoding/json"
@@ -16,14 +16,14 @@ import (
 )
 
 func init() {
-	handler.HandlerRegestry.Add("consul-check-outdated", &ConsulCheckOutdated{})
+	handler.HandlerRegestry.Add("consul-remove-outdated", &ConsulRemoveOutdated{})
 }
 
-type ConsulCheckOutdated struct{}
+type ConsulRemoveOutdated struct{}
 
 // Переодически ищем в consul kv запись с outdated сервисом,
 // если находим и время endOfLife пришло — удаляем этот сервис
-func (_ ConsulCheckOutdated) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entry) error {
+func (_ ConsulRemoveOutdated) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entry) error {
 	cf := consulApi.DefaultConfig()
 	cf.Address = fmt.Sprintf("%s", conf.Path("consul").Data())
 	consul, err := consulApi.NewClient(cf)
