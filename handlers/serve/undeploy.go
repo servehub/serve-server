@@ -75,7 +75,7 @@ func (_ ServeUndeployService) Run(bus *sbus.Sbus, conf *gabs.Container, log *log
 
 		if m.Purge {
 			return utils.RunCmd(
-				"serve deploy --manifest=%s --branch=%s --purge=true",
+				"serve outdated --manifest=%s --branch=%s",
 				m.Manifest,
 				m.Branch,
 			)
