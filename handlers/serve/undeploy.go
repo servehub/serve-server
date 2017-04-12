@@ -43,24 +43,24 @@ func (_ ServeUndeployService) Run(bus *sbus.Sbus, conf *gabs.Container, log *log
 			return err
 		}
 
-		if len(pairs) == 0 {
-			return fmt.Errorf("Service data not found for undeploy `%s`!", m.Name)
-		}
+		if len(pairs) > 0 {
+			for _, item := range pairs {
+				// validate and reserealize json without spaces
+				js := make(map[string]interface{})
+				if err := json.Unmarshal(item.Value, &js); err != nil {
+					return fmt.Errorf("Error on parse deploy data: %v", err)
+				}
+				js["purge"] = true
+				str, _ := json.Marshal(js)
+				pluginData := strings.Replace(string(str), "'", "\\'", -1)
 
-		for _, item := range pairs {
-			// validate and reserealize json without spaces
-			js := make(map[string]interface{})
-			if err := json.Unmarshal(item.Value, &js); err != nil {
-				return fmt.Errorf("Error on parse deploy data: %v", err)
+				names := strings.Split(item.Key, "/")
+				if err := utils.RunCmd("serve %s --plugin-data='%s'", names[len(names)-1], pluginData); err != nil {
+					return err
+				}
 			}
-			js["purge"] = true
-			str, _ := json.Marshal(js)
-			pluginData := strings.Replace(string(str), "'", "\\'", -1)
-
-			names := strings.Split(item.Key, "/")
-			if err := utils.RunCmd("serve %s --plugin-data='%s'", names[len(names)-1], pluginData); err != nil {
-				return err
-			}
+		} else {
+			log.Warnf("Service data not found for undeploy `%s`! Skip...", m.Name)
 		}
 
 		bus.Reply(cmd, nil)

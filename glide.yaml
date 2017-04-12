@@ -2,9 +2,7 @@ package: github.com/servehub/serve-server
 import:
   - package: github.com/kulikov/go-sbus
   - package: github.com/servehub/utils
-  - package: github.com/satori/go.uuid
   - package: gopkg.in/alecthomas/kingpin.v2
   - package: github.com/hashicorp/consul
   - package: github.com/Sirupsen/logrus
-  - package: github.com/cenk/backoff
   - package: github.com/pressly/chi
