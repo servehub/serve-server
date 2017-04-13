@@ -1,5 +1,5 @@
-hash: 63e38ab58a4b92986509f49311f7a25b6cd6330a56e3ffe864ce1d644ce4e779
-updated: 2017-04-10T19:50:49.223913932+03:00
+hash: 6d54e1b78b3d290e338ec1af0c3dcc554d010c1ae35a0b24eb88632f5ecc32e9
+updated: 2017-04-12T13:39:22.075937358+03:00
 imports:
 - name: github.com/alecthomas/template
   version: a0175ee3bccc567396460bf5acd36800cb10c49c
@@ -7,8 +7,6 @@ imports:
   - parse
 - name: github.com/alecthomas/units
   version: 2efee857e7cfd4f3d0138cc3cbb1b4966962b93a
-- name: github.com/cenk/backoff
-  version: 5d150e7eec023ce7a124856b37c68e54b4050ac7
 - name: github.com/cenkalti/backoff
   version: 5d150e7eec023ce7a124856b37c68e54b4050ac7
 - name: github.com/fatih/color
@@ -16,7 +14,7 @@ imports:
 - name: github.com/ghodss/yaml
   version: 0ca9ea5df5451ffdf184b4428c902747c2c11cd7
 - name: github.com/hashicorp/consul
-  version: 3ef7dde64c27e015c61be5e08c3ca55199726b1a
+  version: c891dd43372fb2b925425494f296feb85231fd5d
   subpackages:
   - api
 - name: github.com/hashicorp/go-cleanhttp
@@ -26,7 +24,7 @@ imports:
   subpackages:
   - coordinate
 - name: github.com/kulikov/go-sbus
-  version: 0f0b105cc7da7018f4e90d5d5e2c19931aea36ac
+  version: f02903b2700aab8e28aeec4ad7db4014745a5b1f
   subpackages:
   - transports
 - name: github.com/mattn/go-colorable
@@ -41,20 +39,20 @@ imports:
   - middleware
   - render
 - name: github.com/satori/go.uuid
-  version: b061729afc07e77a8aa4fad0a2fd840958f1942a
+  version: 5bf94b69c6b68ee1b541973bb8e1144db23a194b
 - name: github.com/servehub/utils
   version: 53728dc33b8e80f289afd2fcf558bb7ce1685364
   subpackages:
   - gabs
   - mergemap
 - name: github.com/Sirupsen/logrus
-  version: 7f4b1adc791766938c29457bed0703fb9134421a
+  version: 10f801ebc38b33738c9d17d50860f484a0988ff5
 - name: golang.org/x/net
-  version: e90d6d0afc4c315a0d87a568ae68577cc15149a0
+  version: d1e1b351919c6738fdeb9893d5c998b161464f0c
   subpackages:
   - context
 - name: golang.org/x/sys
-  version: 075e574b89e4c2d22f2286a7e2b919519c6f3547
+  version: f3918c30c5c2cb527c0b071a27c35120a6c0719a
   subpackages:
   - unix
 - name: gopkg.in/alecthomas/kingpin.v2

@@ -6,7 +6,7 @@ WORKDIR /app
 
 EXPOSE 8088
 
-VOLUME ["/etc/serve", "/usr/local/bin/serve", "/root/.ssh", "/tmp/serve"]
+VOLUME ["/etc/serve", "/usr/local/bin", "/root/.ssh", "/tmp/serve"]
 
 ADD bin /app
 

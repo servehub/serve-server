@@ -60,7 +60,7 @@ func main() {
 
 	bus := sbus.New(transports.NewInMemory(log), log)
 
-	log.Infoln("Start serve-server")
+	log.WithField("version", version).Infoln("Start serve-server")
 
 	handlersConf, _ := conf.Path("handlers").Children()
 
