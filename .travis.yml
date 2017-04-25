@@ -22,13 +22,7 @@ script:
 deploy:
   provider: script
   skip_cleanup: true
-  script: >
-    echo "$DOCKER_USERNAME" && \
-    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && \
-    docker build -t servehub/serve-server:latest -t servehub/serve-server:${VERSION} . && \
-    docker push servehub/serve-server:${VERSION} && \
-    docker push servehub/serve-server:latest && \
-    docker logout
+  script: make travis-release
   on:
     repo: servehub/serve-server
 #    tags: true
