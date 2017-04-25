@@ -1,5 +1,6 @@
-VERSION?="0.2.6"
+VERSION?=$$(git describe --tags --abbrev=0 | sed 's/v//')
 DEST?=./bin
+TAG="servehub/serve-server"
 
 export CGO_ENABLED=0
 
@@ -36,14 +37,6 @@ dist: clean
 
 release: dist
 	@echo "==> Build and publish new docker image..."
-	docker build -t servehub/serve-server:latest -t servehub/serve-server:${VERSION} .
-	docker push servehub/serve-server:${VERSION}
-	docker push servehub/serve-server:latest
-
-travis-release:
-	@echo "==> Build and publish new docker image..."
-	@docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"
-	docker build -t servehub/serve-server:latest -t servehub/serve-server:${VERSION} .
-	docker push servehub/serve-server:${VERSION}
-	docker push servehub/serve-server:latest
-	docker logout
+	docker build -t ${TAG}:latest -t ${TAG}:${VERSION} .
+	docker push ${TAG}:${VERSION}
+	docker push ${TAG}:latest

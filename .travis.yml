@@ -7,6 +7,10 @@ go:
 services:
   - docker
 
+branches:
+  only:
+    - /^v[\d\.]+$/
+
 env:
   global:
     - secure: "MMQON8M4wcIZMZf7o4d3CGQ/OgCEsaVa0rXlsKBl25wkQyF/+IWcvLoMK1AGp2YEy1BU32WtMEXAFgIBINBzzx23PTEf3MSxaZMPBdv44En1neuyL6FHGJT8af2r84sr0TRm9uZrGcXv4J5lXWgYh7N4nnOrtx7jIgWe/JiHGo6TlcnlplW1fSughdyu66OcSYJrlzqodSNhCOZ/rohTOJDnd7utfJXhgJ3MVZ60jbC55Ncy1PcU4QoJrlYe7CCvZhfijBBrYZL6ZBMbnDyL7oGcNMzNdwaBnYmqBIHS8Bf49o1T8SvOJLcEQhDSi9d4KODVbe0y0wF7xLkc+e8XRd3RURjJoLKUJwZIBHdAnhikFVzluSy4D+uJ+AUzkqqgvDS/UB7gzuCnTzq+oVluyxPJJT32HASW0qZOIajJDfC9J09Yp7y/RnXxmmwlFXMP9kqEUtW1zJD3K/sGqacgjxWrud/ZGbecMJiS/OqPiXF9/yZAQSNn4QQV7l+Pl0VGvX+VIVcO12gmWDaSanWO6emvu63TGsguVUsH71GabjOqalORsmMFTwT+a903KKdsfpaoBeMg2f0ORX9oERnxTEEEPFWGbYGdaALBx0C6KfUgLpB30QCXv2GwG7x4CAiQaM7hdHBl6f6uM0dR/bK/BZ001RPtQ386NpURe0LqsNs="
@@ -16,6 +20,6 @@ install:
   - make deps
 
 script:
-  - if [ -n "$TRAVIS_TAG" ]; then export VERSION="${TRAVIS_TAG//v/}"; fi
-  - make dist
-  - if [ -n "$TRAVIS_TAG" ]; then make travis-release; fi
+  - docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"
+  - make release
+  - docker logout
