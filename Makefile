@@ -1,4 +1,4 @@
-VERSION?="0.2.5"
+VERSION?="0.2.6"
 DEST?=./bin
 
 default: install
@@ -30,7 +30,7 @@ install: test build
 	cp ${DEST}/* ${GOPATH}/bin/
 
 dist: clean
-	GOOS=linux make build
+	GOOS=linux GOARCH=amd64 make build
 
 release: dist
 	@echo "==> Build and publish new docker image..."
