@@ -9,7 +9,9 @@ test:
 
 deps:
 	@echo "==> Install dependencies..."
-	go get -u github.com/jteeuwen/go-bindata/...
+	go get github.com/jteeuwen/go-bindata/...
+	go get github.com/Masterminds/glide
+	glide i -v
 
 clean:
 	@echo "==> Cleanup old binaries..."

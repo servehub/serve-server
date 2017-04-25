@@ -1,0 +1,25 @@
+language: go
+sudo: required
+
+go:
+  - 1.8.x
+
+services:
+  - docker
+
+branches:
+  only:
+    - /^v[\d\.]+$/
+
+env:
+  global:
+    - secure: IZn4UBnF1VtMvKfakfb9kYcS//nfq8WVWk9R0/uJmlm14CnA3O1hibX8XnvoUdngEHn437S8DOUjV+kBNenZOC/i/fiS1HehS8QrUuYragoobngbu0dAcIdpQIoBQXrQneG0xnesZXbaqzOMH8MPMuuD931rY0CSuHFR0La1Lb+CjwbggWkdBoJYnaK+xJEooIyqEEGltxEXYKaYk/IGYpGzKFUDWHGAjEYJLd8GE491pT+KZS2/zdEireOJ5IEkHX6nJ8X1YClqGcqdN1U8FITlIpNi+572m5CgmhAMTAnP3KMUgE2JWwWboPzv5IJlyVEQEnlxNUUMWciWd/mYZwNHMS2VQSZ6IbK7VGmcq+6q17ZctL7c/4qgOt49Xr1OdfE/jHWYCtpiGulJA6zEegGCHubs7VLZZknG73G6MfYKajHwGzvr7zuy1S9TOzD2I3jD2u+8wah2tOEr9mXadYqaa3GnGk5fLJHfYkU6g9m+xLVR0gMWELkmH1EnpZdhJLse6wtrHq5IZNqaGUfVzc6PWrrNJpN2wmEgr3h4mMFvp7pnfcc7/lOtgXThHk/TYev1kIln0bgPjnyY6n+jBqfWy8oRfGHldzflNgNxhepT5ynl0DHyIpDnIEcy+nCT7x7T673/C3pk6tx6pw9iHTNx3z/GnKf1XMv15BWtw4U=
+    - secure: rRg7TUgHygdnpw9Ke48jkQeDOkSWPxSSqH9E6cgN2ix9CFXQkZ9P5wbgikbFPlOWraL2bqsjK70wNy32xkTJOV9pEBhTUpH6DLVFsRNNrP2FioXcCnHgGiKQmovcwZmK0SvgYtvFZL+84Csny2OTrfAHb9QlJ620mcGmTN1EdVCCvU3yNezkcMHlWoBKJb+xANsW4jpimuMnu1RkB8jDPOMOfxgkCbxYBPLnA671fqXXmR1cnNGO2FQf7eOQDoKNst6nqOwqY51u6qby8JivgxJD67Oq0s+MQXI8L1OCRbiMnPavdoRRcCm66bnWoV+gLT0kLUVVpyRiW3SP6tZ8ulUeAXHrc4dv6/3A7pB7p2c6cATW3KKqvynelv8XXvsMa20eQCf1E96TuE8r+8cE0urrGN6GbVlKW8XukBesTxRS2LlKCfyguxNDLwEKgOmlbbuQarcoAD2bHe+MgAXDiC4nT/x0IgNfGecC6zcIyPX/E7qlUXynqcn0gHQEGuOcsbITeO52C4X3eSxQuh8DQc3JQzBTywRhK4hSpB/yxhBDgc46AeaGF4VjfgDWeE3xZ3ma4K2ZuRJygP2pKbOK2mlFGN+N7AUAL55gWUMRCsLs67xf+ysN/4zSrglDd8PsD3HoW1B8/HpDzGVqS9tjwk9FOb94BMC/fzRe7Ys0ODg=
+
+install:
+  - make deps
+
+script:
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - export VERSION="${TRAVIS_TAG//v/}"
+  - make release
