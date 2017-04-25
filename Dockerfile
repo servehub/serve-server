@@ -8,6 +8,6 @@ EXPOSE 8088
 
 VOLUME ["/etc/serve", "/usr/local/bin", "/root/.ssh", "/tmp/serve"]
 
-ADD bin /app
+COPY bin/serve-server /app/serve-server
 
 CMD ["/app/serve-server", "--config=/etc/serve/serve-server.yml"]
