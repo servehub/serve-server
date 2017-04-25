@@ -18,16 +18,4 @@ install:
 script:
   - if [ -n "$TRAVIS_TAG" ]; then export VERSION="${TRAVIS_TAG//v/}"; fi
   - make dist
-  - bin/serve-server --version
-  - make travis-release
-
-deploy:
-  provider: releases
-  api_key:
-    secure: xlOI7+hAmEXTtFiyOPgE6M26+14urX9/fjtK5rv4SCEPgH0NUBEI9xDoXq+n4tBaBv1gUxQsW1X7qINmsCv1qmVvkxNIsZOXBppElm90Fk2PtnD+0GPCUxKufokDn7TkWJVIj8TzLVazvOTiFC9bkE2FIaNFz5ybfCDtQ7H8c2NpiaXnlqEm8lcgojtCBwPYMaGopRlwtJtiW+XLBzsd92xZji58xsuaIGa81wAlH63ZFUUrvfiDPHWnupOuE7tIxdLnbcAf16yLMRdVaCHPHg1TfbIq9ISQmA0/yNfWrErUBS6yMPTPERuBgAs/D8gxlEgQoltnWgMxrH8WR7lMrUhSkVuxDA5BI2CB6UG3xnh/hIDlBxQ3ScttaXoU88rsL6bZXv2XK4J5c+7WDq8SjtCVHPTBShymFVLn3gV9pH7IoWIbjQ3YW1yXKmjJecj7dp4Ddv+138dHvE4JuuoOls7ZyrBicM9z0m/qOzr0Q1YemPMwJIQzUl9ZaDssFDyd68x05K1B5i1aWVAiWzlM+OlIEVfjSdeZxEohiPY7O+ihoVadOyApIDOUi0ugJyg4hUU4JXbNhzLq0o3EnAysd4/UhfiGO+w0WUA3EAJG+k7qZ4Aain+DMMU1/0m6Ham+odX6W/5XiBBEoU9ip1bhiQjqq2zKoI/TwYUOnpH3IN4=
-  file_glob: true
-  file: bin/*
-  overwrite: true
-  skip_cleanup: true
-  on:
-    repo: servehub/serve-server
+  - if [ -n "$TRAVIS_TAG" ]; then make travis-release; fi
