@@ -18,4 +18,5 @@ install:
 script:
   - if [ -n "$TRAVIS_TAG" ]; then export VERSION="${TRAVIS_TAG//v/}"; fi
   - make dist
-  - if [ -n "$TRAVIS_TAG" ]; then make travis-release; fi
+  - bin/serve-server --version
+  - make travis-release
