@@ -16,7 +16,7 @@ install:
   - make deps
 
 script:
-  - export VERSION="${TRAVIS_TAG//v/}"
+  - if [ -n "$TRAVIS_TAG" ]; then export VERSION="${TRAVIS_TAG//v/}"; fi
   - make dist
 
 after_success:
