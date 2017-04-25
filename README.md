@@ -1,4 +1,6 @@
-# broforce
+[![Build Status](https://travis-ci.org/servehub/serve-server.svg?branch=master)](https://travis-ci.org/servehub/serve-server)
+
+# serve-server
 
 Возможности:
  - прием `webhook` от систем: `JIRA`, `Github`, `Gitlab`;
