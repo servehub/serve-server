@@ -1,6 +1,10 @@
-FROM alpine
+FROM alpine:3.5
 
-RUN apk add --update bash git openssh && rm -rf /var/cache/apk/*
+RUN apk add --update --no-cache \
+      ca-certificates \
+      bash \
+      git \
+      openssh
 
 WORKDIR /app
 
