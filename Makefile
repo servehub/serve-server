@@ -1,6 +1,7 @@
 VERSION?="0.2.6"
 DEST?=./bin
-CGO_ENABLED=0
+
+export CGO_ENABLED=0
 
 default: install
 
