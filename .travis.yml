@@ -9,8 +9,8 @@ services:
 
 env:
   global:
-    - secure: F+BhZ2iWz60uQcz9/l1EXq3HNY+ermtHo5w8O/wlS0p/Ihb8OlLJW3AMGY6ZlqG+VOdqIRy6OPrEShBKTTUrNo6zWUlNT587LDNEdExrmlmO/ikQ8GeOtnv2EnolLr1HoyciKoqBblgT41SU2B//89y2disjvcyR8jNpIpvuBK8wED7c5Nv0cvYLUs414oAFtKyhUpZnkFbIX22m82JQvr61XIUKyMNvLvNYKGL+mISTuvXlCp4qASMM0+9lyjG7Mamf4rrwp30ep7WcSu2qhmllOSCoxGMgAw8/ozf+5dUwJmMfZfoR4iC5BZvOMBabAcix44B3LfpWCr0qQueVMu/i6ie9idALIvWNm0e2dAbOJqa2Lsi06UT00Uz/rNQityXDWGf/3e6MZ8xwnK3TSGKP3INCfUbrO+dn/GOW8zh59Iir+CvhECque2J7KIUO0foZbQJB5hafcJZM8KNTwRW2akC+7JIJvUjor11I7L6XHiP9aN2gOp0ZAb2UJLbPY33SqhUnzp5xHvK4yknaagcq8CQdJqMSpnPwnzhlwxDsYUoFNCvLxCC/WqHQbDLvLBpnmLZ50YhAvCxYTXNSrpWWT+friklIdc9gF+ICYo/IpO5KvQLZM19ikb4ZMPteCAM5VCK+UIn8vkOBiIULpLdY51t1g+K65DoU77yU2Iw=
-    - secure: qnhQSfbgFhptJPiqkl/uOv8qpDr3nlkF+WXriTyC8zV5vLSTkJWipREhHDPJU0MwODo2QcNnNknNVinNfhWwfLHRCHyKyR//hNrEP6VEjcsoUrV8YwNkhz9msb5p9bFtSdkyl0zSWhde9AKWECAjQZJn9B/aWMs0D81RHWXSwpOYhrKECCVmsWS26TeBv+nVEWGrdP1FbjuniU/fGRPidzcXvMr0kVEopUtaTbTTst2ISeHmZ943ZQ5Ld55szECmxe78VdZld7LI6fuz8da/J5NLj5DAmYuMn9aA0VIZdkhQ9F5GjsDF4gvriO1JH1+NQb7hw4DzsN06oM5U6Ybwx/JlWf9udmBMvDSoJM8DQJMynhGrFPTC2vVk50VYRyHE16Os1HRu4T1SQXPjEKc/tVo5RM6jeXYXUqoXcWxVqFA11vZa52pVzT++Eq1yObZV7VkF8m1jEJV3TrYNbMcXFe9iNpvdZ4KumlOsEMAqzsx6hcQ+A8geGuSsSVkoryhtV0neJMRtFXrlXTdXu6UDMk5NBwk8qHQxWnbcLqchLwAI0XdhrWBvGDb8BijPduHp7XfAJgTcwVo3VxY8m49JiKoU88KTF6PoW5gh1sPNjgXV6Xv6B/CCLPdd53ongGPsCoI4NnEe4C8ksDrjpxX1WA8AjzTTH6A+rHKxG6F8Pzc=
+    - secure: "F+BhZ2iWz60uQcz9/l1EXq3HNY+ermtHo5w8O/wlS0p/Ihb8OlLJW3AMGY6ZlqG+VOdqIRy6OPrEShBKTTUrNo6zWUlNT587LDNEdExrmlmO/ikQ8GeOtnv2EnolLr1HoyciKoqBblgT41SU2B//89y2disjvcyR8jNpIpvuBK8wED7c5Nv0cvYLUs414oAFtKyhUpZnkFbIX22m82JQvr61XIUKyMNvLvNYKGL+mISTuvXlCp4qASMM0+9lyjG7Mamf4rrwp30ep7WcSu2qhmllOSCoxGMgAw8/ozf+5dUwJmMfZfoR4iC5BZvOMBabAcix44B3LfpWCr0qQueVMu/i6ie9idALIvWNm0e2dAbOJqa2Lsi06UT00Uz/rNQityXDWGf/3e6MZ8xwnK3TSGKP3INCfUbrO+dn/GOW8zh59Iir+CvhECque2J7KIUO0foZbQJB5hafcJZM8KNTwRW2akC+7JIJvUjor11I7L6XHiP9aN2gOp0ZAb2UJLbPY33SqhUnzp5xHvK4yknaagcq8CQdJqMSpnPwnzhlwxDsYUoFNCvLxCC/WqHQbDLvLBpnmLZ50YhAvCxYTXNSrpWWT+friklIdc9gF+ICYo/IpO5KvQLZM19ikb4ZMPteCAM5VCK+UIn8vkOBiIULpLdY51t1g+K65DoU77yU2Iw="
+    - secure: "qnhQSfbgFhptJPiqkl/uOv8qpDr3nlkF+WXriTyC8zV5vLSTkJWipREhHDPJU0MwODo2QcNnNknNVinNfhWwfLHRCHyKyR//hNrEP6VEjcsoUrV8YwNkhz9msb5p9bFtSdkyl0zSWhde9AKWECAjQZJn9B/aWMs0D81RHWXSwpOYhrKECCVmsWS26TeBv+nVEWGrdP1FbjuniU/fGRPidzcXvMr0kVEopUtaTbTTst2ISeHmZ943ZQ5Ld55szECmxe78VdZld7LI6fuz8da/J5NLj5DAmYuMn9aA0VIZdkhQ9F5GjsDF4gvriO1JH1+NQb7hw4DzsN06oM5U6Ybwx/JlWf9udmBMvDSoJM8DQJMynhGrFPTC2vVk50VYRyHE16Os1HRu4T1SQXPjEKc/tVo5RM6jeXYXUqoXcWxVqFA11vZa52pVzT++Eq1yObZV7VkF8m1jEJV3TrYNbMcXFe9iNpvdZ4KumlOsEMAqzsx6hcQ+A8geGuSsSVkoryhtV0neJMRtFXrlXTdXu6UDMk5NBwk8qHQxWnbcLqchLwAI0XdhrWBvGDb8BijPduHp7XfAJgTcwVo3VxY8m49JiKoU88KTF6PoW5gh1sPNjgXV6Xv6B/CCLPdd53ongGPsCoI4NnEe4C8ksDrjpxX1WA8AjzTTH6A+rHKxG6F8Pzc="
 
 install:
   - make deps
@@ -19,11 +19,15 @@ script:
   - if [ -n "$TRAVIS_TAG" ]; then export VERSION="${TRAVIS_TAG//v/}"; fi
   - make dist
 
-after_success:
-  - if [ -n "$TRAVIS_TAG" ]; then
-      docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-      docker build -t servehub/serve-server:latest -t servehub/serve-server:${VERSION} .;
-      docker push servehub/serve-server:${VERSION};
-      docker push servehub/serve-server:latest;
-      docker logout;
-    fi
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: >
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && \
+    docker build -t servehub/serve-server:latest -t servehub/serve-server:${VERSION} . && \
+    docker push servehub/serve-server:${VERSION} && \
+    docker push servehub/serve-server:latest && \
+    docker logout
+  on:
+    repo: servehub/serve-server
+    tags: true
