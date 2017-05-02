@@ -70,6 +70,8 @@ func (_ WebhooksBitbucket) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus
 				"branch":   branch,
 				"purge":    closed,
 			})
+		} else {
+			log.Debugln("Manifest not changed")
 		}
 
 		return nil
