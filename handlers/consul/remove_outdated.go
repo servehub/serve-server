@@ -64,11 +64,12 @@ func (_ ConsulRemoveOutdated) Run(bus *sbus.Sbus, conf *gabs.Container, log *log
 
 			if endOfLife.Unix() < time.Now().Unix() {
 				name := strings.TrimPrefix(item.Key, keyPrefix)
+				key := item.Key
 				log.WithField("json", string(item.Value)).Infoln("Found outdated service:", name)
 
 				bus.Request("serve-undeploy", map[string]string{"name": name}, func(resp sbus.Message) error {
-					log.Infof("Service `%s` deleted! Remove outdated key...", name)
-					return utils.DelConsulKv(consul, item.Key)
+					log.Infof("Service `%s` deleted! Remove outdated key `%s`...", name, key)
+					return utils.DelConsulKv(consul, key)
 				}, time.Minute*3)
 			}
 		}
