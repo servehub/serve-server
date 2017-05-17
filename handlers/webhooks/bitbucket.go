@@ -14,6 +14,7 @@ import (
 	"github.com/servehub/serve-server/models"
 	"github.com/servehub/utils"
 	"github.com/servehub/utils/gabs"
+	"strconv"
 )
 
 func init() {
@@ -37,11 +38,11 @@ func (_ WebhooksBitbucket) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus
 			return err
 		}
 
-		closed := fmt.Sprintf("%v", data.Path("push.changes.closed").Data())
 		repo := fmt.Sprintf("git@%s:%s.git", uri.Host, data.Path("repository.full_name").Data())
 		branch := fmt.Sprintf("%s", data.Path("push.changes.new.name").Data())
+		closed := "true" == fmt.Sprintf("%v", data.Path("push.changes.closed").Data())
 
-		if closed == "true" {
+		if closed {
 			branch = fmt.Sprintf("%s", data.Path("push.changes.old.name").Data())
 		}
 
@@ -53,7 +54,7 @@ func (_ WebhooksBitbucket) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus
 		manifest := tmp + "/manifest.yml"
 		oldHash := md5check(manifest)
 
-		if closed != "true" {
+		if !closed {
 			if err := utils.RunCmd(
 				"git archive --remote=%s %s manifest.yml | tar -xC %s",
 				repo,
@@ -64,12 +65,12 @@ func (_ WebhooksBitbucket) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus
 			}
 		}
 
-		if closed == "true" || oldHash != md5check(manifest) {
+		if closed || oldHash != md5check(manifest) {
 			return bus.Pub("manifest-changed", models.ManifestChanged{
 				Manifest: manifest,
 				Repo:     repo,
 				Branch:   branch,
-				Purge:    true,
+				Purge:    closed,
 			})
 		} else {
 			log.Debugln("Manifest not changed")
