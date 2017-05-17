@@ -12,6 +12,9 @@ handlers:
     check-interval: 15s
     consul: 127.0.0.1:8500
 
+  debug-handler:
+    listen: ":8013"
+
   webhooks-server:
     listen: ":8088"
     secret-key: "sdf87adfkj234g"
@@ -19,3 +22,5 @@ handlers:
   webhooks-bitbucket: {}
 
   gocd-create-pipeline: {}
+
+  create-dashboards: {}

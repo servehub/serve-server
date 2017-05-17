@@ -14,12 +14,15 @@ import (
 )
 
 func init() {
-	handler.HandlerRegestry.Add("gocd-create-pipeline", &GocdCreatePipeline{})
+	handler.HandlerRegestry.Add("create-dashboards", &CreateDashboards{})
 }
 
-type GocdCreatePipeline struct{}
+type CreateDashboards struct{}
 
-func (_ GocdCreatePipeline) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entry) error {
+/**
+ * Create and delete dashboard in kibana3, grafana, etc
+ */
+func (_ CreateDashboards) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entry) error {
 
 	bus.Sub("manifest-changed", func(cmd sbus.Message) error {
 		m := &models.ManifestChanged{}
@@ -28,9 +31,8 @@ func (_ GocdCreatePipeline) Run(bus *sbus.Sbus, conf *gabs.Container, log *logru
 		}
 
 		return utils.RunCmd(
-			"serve gocd.pipeline.create --manifest=%s --ssh-repo=%s --branch=%s --purge=%v",
+			"serve dashboard --manifest=%s --branch=%s --purge=%v",
 			m.Manifest,
-			m.Repo,
 			m.Branch,
 			m.Purge,
 		)

@@ -12,6 +12,7 @@ import (
 	"github.com/servehub/serve-server/handler"
 	"github.com/servehub/utils"
 	"github.com/servehub/utils/gabs"
+	"github.com/servehub/serve-server/models"
 )
 
 func init() {
@@ -68,7 +69,7 @@ func (_ ServeUndeployService) Run(bus *sbus.Sbus, conf *gabs.Container, log *log
 	})
 
 	bus.Sub("manifest-changed", func(cmd sbus.Message) error {
-		m := &manifestChanged{}
+		m := &models.ManifestChanged{}
 		if err := cmd.Unmarshal(m); err != nil {
 			return fmt.Errorf("Error on unmarshal manifestChanged: %v", err)
 		}
@@ -89,11 +90,4 @@ func (_ ServeUndeployService) Run(bus *sbus.Sbus, conf *gabs.Container, log *log
 
 type undeployCmd struct {
 	Name string `json:"name"`
-}
-
-type manifestChanged struct {
-	Manifest string `json:"manifest"`
-	Repo     string `json:"repo"`
-	Branch   string `json:"branch"`
-	Purge    bool   `json:"purge,string"`
 }

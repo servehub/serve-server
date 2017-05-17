@@ -11,6 +11,7 @@ import (
 	"github.com/kulikov/go-sbus"
 
 	"github.com/servehub/serve-server/handler"
+	"github.com/servehub/serve-server/models"
 	"github.com/servehub/utils"
 	"github.com/servehub/utils/gabs"
 )
@@ -64,11 +65,11 @@ func (_ WebhooksBitbucket) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus
 		}
 
 		if closed == "true" || oldHash != md5check(manifest) {
-			return bus.Pub("manifest-changed", map[string]string{
-				"manifest": manifest,
-				"repo":     repo,
-				"branch":   branch,
-				"purge":    closed,
+			return bus.Pub("manifest-changed", models.ManifestChanged{
+				Manifest: manifest,
+				Repo:     repo,
+				Branch:   branch,
+				Purge:    true,
 			})
 		} else {
 			log.Debugln("Manifest not changed")
