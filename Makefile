@@ -35,6 +35,11 @@ install: test build
 dist: clean
 	GOOS=linux GOARCH=amd64 make build
 
+bump-tag:
+	TAG=$$(echo "v${VERSION}" | awk -F. '{$$NF = $$NF + 1;} 1' | sed 's/ /./g'); \
+	git tag $$TAG; \
+	git push --tags
+
 release: dist
 	@echo "==> Build and publish new docker image..."
 	docker build -t ${TAG}:latest -t ${TAG}:${VERSION} .
