@@ -24,3 +24,6 @@ handlers:
   gocd-create-pipeline: {}
 
   create-dashboards: {}
+
+  update-monitoring-alerts:
+    env: qa

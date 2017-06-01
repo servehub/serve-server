@@ -10,11 +10,11 @@ import (
 	"github.com/Sirupsen/logrus"
 	"github.com/kulikov/go-sbus"
 
-	"github.com/servehub/serve-server/handler"
-	"github.com/servehub/serve-server/models"
 	"github.com/servehub/utils"
 	"github.com/servehub/utils/gabs"
-	"strconv"
+
+	"github.com/servehub/serve-server/handler"
+	"github.com/servehub/serve-server/models"
 )
 
 func init() {
