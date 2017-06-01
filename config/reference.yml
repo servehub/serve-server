@@ -26,4 +26,4 @@ handlers:
   create-dashboards: {}
 
   update-monitoring-alerts:
-    env: qa
+    env: dev
