@@ -3,12 +3,11 @@ logging:
   formatter: text
 
 handlers:
-  serve-undeploy-service:
-    consul: 127.0.0.1:8500
-    service-data-prefix: "services/data/"
+  serve-undeploy-service: {}
 
   consul-remove-outdated:
-    prefix: "services/outdated/"
+    outdated-prefix: "services/outdated/"
+    service-data-prefix: "services/data/"
     check-interval: 15s
     consul: 127.0.0.1:8500
 
