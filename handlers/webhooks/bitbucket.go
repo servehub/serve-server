@@ -61,7 +61,12 @@ func (_ WebhooksBitbucket) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus
 				branch,
 				tmp,
 			); err != nil {
-				return err
+				if err.Error() == "exit status 1" {
+					log.Debugf("manifest.yml not found in `%s`!", repo)
+					return nil
+				} else {
+					return err
+				}
 			}
 		}
 
