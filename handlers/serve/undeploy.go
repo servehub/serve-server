@@ -16,6 +16,9 @@ func init() {
 	handler.HandlerRegestry.Add("serve-undeploy-service", &ServeUndeployService{})
 }
 
+/**
+ * Undeploy service after branch remove
+ */
 type ServeUndeployService struct{}
 
 func (_ ServeUndeployService) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entry) error {

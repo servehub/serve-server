@@ -31,8 +31,9 @@ func (_ CreateDashboards) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.
 		}
 
 		return utils.RunCmd(
-			"serve dashboard --manifest=%s --branch=%s --purge=%v",
+			"serve dashboard --manifest=%s --env=%s --branch=%s --purge=%v",
 			m.Manifest,
+			conf.Path("env").Data(),
 			m.Branch,
 			m.Purge,
 		)

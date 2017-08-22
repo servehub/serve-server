@@ -22,7 +22,8 @@ handlers:
 
   gocd-create-pipeline: {}
 
-  create-dashboards: {}
+  create-dashboards:
+    env: dev
 
   update-monitoring-alerts:
     env: dev
