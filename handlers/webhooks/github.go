@@ -1,14 +1,16 @@
 package webhooks
 
 import (
+	"errors"
 	"fmt"
+	"io/ioutil"
+	"net/http"
 	"os"
 	"strings"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/kulikov/go-sbus"
 
-	"github.com/servehub/utils"
 	"github.com/servehub/utils/gabs"
 
 	"github.com/servehub/serve-server/handler"
@@ -31,11 +33,12 @@ func (_ WebhooksGithub) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 
 		log.Debugln("Receive webhook: ", data.StringIndent("", "  "))
 
-		repo := data.Path("repository.ssh_url").String()
-		branch := strings.TrimPrefix(data.Path("ref").String(), "refs/heads/")
+		repo := fmt.Sprintf("%s", data.Path("repository.ssh_url").Data())
+		branch := strings.TrimPrefix(fmt.Sprintf("%s", data.Path("ref").Data()), "refs/heads/")
+		fullName := fmt.Sprintf("%s", data.Path("repository.full_name").Data())
 		closed := "true" == fmt.Sprintf("%v", data.Path("deleted").Data())
 
-		tmp := fmt.Sprintf("/tmp/serve/manifests/%s/%s", data.Path("repository.full_name").Data(), branch)
+		tmp := fmt.Sprintf("/tmp/serve/manifests/%s/%s", fullName, branch)
 		if err := os.MkdirAll(tmp, os.ModePerm); err != nil {
 			return err
 		}
@@ -44,18 +47,34 @@ func (_ WebhooksGithub) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 		oldHash := md5check(manifest)
 
 		if !closed {
-			if err := utils.RunCmd(
-				"git archive --remote=%s %s manifest.yml | tar -xC %s",
-				repo,
-				branch,
-				tmp,
-			); err != nil {
-				if err.Error() == "exit status 1" {
-					log.Debugf("manifest.yml not found in `%s`!", repo)
-					return nil
-				} else {
-					return err
-				}
+			fileUrl := fmt.Sprintf("https://api.github.com/repos/%s/contents/manifest.yml?ref=%s", fullName, branch)
+			req, _ := http.NewRequest("GET", fileUrl, nil)
+
+			log.Debug("Request manifest.yml: " + fileUrl)
+
+			req.Header.Set("Authorization", fmt.Sprintf("token %s", conf.Path("token").Data()))
+			req.Header.Set("Accept", "application/vnd.github.v3.raw")
+
+			resp, err := http.DefaultClient.Do(req)
+			if err != nil {
+				return err
+			}
+
+			if resp.StatusCode == 404 {
+				log.Debugf("manifest.yml not found in `%s`!", repo)
+				return nil
+			} else if resp.StatusCode != 200 {
+				return errors.New(resp.Status)
+			}
+
+			defer resp.Body.Close()
+			body, err := ioutil.ReadAll(resp.Body)
+			if err != nil {
+				return err
+			}
+
+			if err := ioutil.WriteFile(manifest, body, 0644); err != nil {
+				return err
 			}
 		}
 

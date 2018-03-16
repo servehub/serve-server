@@ -19,7 +19,9 @@ handlers:
     secret-key: "sdf87adfkj234g"
 
   webhooks-bitbucket: {}
-  webhooks-github: {}
+
+  webhooks-github:
+    token: "XXX"
 
   gocd-create-pipeline: {}
 
