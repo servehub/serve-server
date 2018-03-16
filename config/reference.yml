@@ -19,6 +19,7 @@ handlers:
     secret-key: "sdf87adfkj234g"
 
   webhooks-bitbucket: {}
+  webhooks-github: {}
 
   gocd-create-pipeline: {}
 
