@@ -5,4 +5,4 @@ import:
   - package: gopkg.in/alecthomas/kingpin.v2
   - package: github.com/hashicorp/consul
   - package: github.com/Sirupsen/logrus
-  - package: github.com/pressly/chi
+  - package: github.com/go-chi/chi

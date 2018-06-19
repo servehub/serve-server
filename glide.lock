@@ -1,5 +1,5 @@
-hash: 6d54e1b78b3d290e338ec1af0c3dcc554d010c1ae35a0b24eb88632f5ecc32e9
-updated: 2017-04-12T13:39:22.075937358+03:00
+hash: 7196f5eee827acae39a443ea05d506601d27991fe6be61dfc3b1ae0ed53b05ef
+updated: 2018-06-19T12:06:35.792016+03:00
 imports:
 - name: github.com/alecthomas/template
   version: a0175ee3bccc567396460bf5acd36800cb10c49c
@@ -7,56 +7,72 @@ imports:
   - parse
 - name: github.com/alecthomas/units
   version: 2efee857e7cfd4f3d0138cc3cbb1b4966962b93a
+- name: github.com/armon/go-metrics
+  version: 783273d703149aaeb9897cf58613d5af48861c25
 - name: github.com/cenkalti/backoff
-  version: 5d150e7eec023ce7a124856b37c68e54b4050ac7
+  version: f756bc9a37f808627c8c1b26d2d6ea40c468440b
 - name: github.com/fatih/color
-  version: 9131ab34cf20d2f6d83fdc67168a5430d1c7dc23
+  version: 2d684516a8861da43017284349b7e303e809ac21
 - name: github.com/ghodss/yaml
-  version: 0ca9ea5df5451ffdf184b4428c902747c2c11cd7
+  version: e9ed3c6dfb39bb1a32197cb10d527906fe4da4b6
+- name: github.com/go-chi/chi
+  version: cca4135d8dddff765463feaf1118047a9e506b4a
+  subpackages:
+  - middleware
+- name: github.com/go-chi/render
+  version: 3215478343fbc559bd3fc08f7031bb134d6bdad5
 - name: github.com/hashicorp/consul
-  version: c891dd43372fb2b925425494f296feb85231fd5d
+  version: 8f663627708764b97d15e96a994e882118f596c4
   subpackages:
   - api
 - name: github.com/hashicorp/go-cleanhttp
-  version: 3573b8b52aa7b37b9358d966a898feb387f62437
+  version: d5fe4b57a186c716b0e00b8c301cbd9b4182694d
+- name: github.com/hashicorp/go-immutable-radix
+  version: 7f3cd4390caab3250a57f30efdb2a65dd7649ecf
+- name: github.com/hashicorp/go-rootcerts
+  version: 6bb64b370b90e7ef1fa532be9e591a81c3493e00
+- name: github.com/hashicorp/golang-lru
+  version: 0fb14efe8c47ae851c0034ed7a448854d3d34cf3
+  subpackages:
+  - simplelru
 - name: github.com/hashicorp/serf
-  version: 19f2c401e122352c047a84d6584dd51e2fb8fcc4
+  version: 984a73625de3138f44deb38d00878fab39eb6447
   subpackages:
   - coordinate
 - name: github.com/kulikov/go-sbus
-  version: f02903b2700aab8e28aeec4ad7db4014745a5b1f
+  version: 88ac658ad6f16f4464c458ea42609b8e06bbd308
   subpackages:
   - transports
 - name: github.com/mattn/go-colorable
-  version: 5411d3eea5978e6cdc258b30de592b60df6aba96
-  repo: https://github.com/mattn/go-colorable
+  version: efa589957cd060542a26d2dd7832fd6a6c6c3ade
 - name: github.com/mattn/go-isatty
-  version: 57fdcb988a5c543893cc61bce354a6e24ab70022
-  repo: https://github.com/mattn/go-isatty
-- name: github.com/pressly/chi
-  version: 157587f33c258f3590967dfc7be2e75c0aa1cdf3
-  subpackages:
-  - middleware
-  - render
+  version: 6ca4dbf54d38eea1a992b3c722a76a5d1c4cb25c
+- name: github.com/mitchellh/go-homedir
+  version: 3864e76763d94a6df2f9960b16a20a33da9f9a66
 - name: github.com/satori/go.uuid
-  version: 5bf94b69c6b68ee1b541973bb8e1144db23a194b
+  version: 36e9d2ebbde5e3f13ab2e25625fd453271d6522e
 - name: github.com/servehub/utils
-  version: 53728dc33b8e80f289afd2fcf558bb7ce1685364
+  version: edb6680cf9880c104035167e392725184cba33b1
   subpackages:
   - gabs
   - mergemap
 - name: github.com/Sirupsen/logrus
-  version: 10f801ebc38b33738c9d17d50860f484a0988ff5
+  version: 75068beb13ada9c0ddde611f678523fda7352650
+- name: golang.org/x/crypto
+  version: 027cca12c2d63e3d62b670d901e8a2c95854feec
+  subpackages:
+  - ssh/terminal
 - name: golang.org/x/net
-  version: d1e1b351919c6738fdeb9893d5c998b161464f0c
+  version: db08ff08e8622530d9ed3a0e8ac279f6d4c02196
   subpackages:
   - context
 - name: golang.org/x/sys
-  version: f3918c30c5c2cb527c0b071a27c35120a6c0719a
+  version: 6c888cc515d3ed83fc103cf1d84468aad274b0a7
   subpackages:
   - unix
+  - windows
 - name: gopkg.in/alecthomas/kingpin.v2
-  version: e9044be3ab2a8e11d4e1f418d12f0790d57e8d70
+  version: 947dcec5ba9c011838740e680966fd7087a71d0d
 - name: gopkg.in/yaml.v2
-  version: cd8b52f8269e0feb286dfeef29f8fe4d5b397e0b
+  version: 5420a8b6744d3b0345ab293f6fcba19c978f1183
 testImports: []

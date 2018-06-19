@@ -7,9 +7,9 @@ import (
 
 	"github.com/Sirupsen/logrus"
 	"github.com/kulikov/go-sbus"
-	"github.com/pressly/chi"
-	"github.com/pressly/chi/middleware"
-	"github.com/pressly/chi/render"
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
+	"github.com/go-chi/render"
 
 	"github.com/servehub/serve-server/handler"
 	"github.com/servehub/utils/gabs"

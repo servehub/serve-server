@@ -100,12 +100,11 @@ func undeployService(name string, dataPrefix string, consul *consulApi.Client, l
 			}
 			js["purge"] = true
 			str, _ := json.Marshal(js)
-			pluginData := strings.Replace(string(str), "'", "\\'", -1)
 
-			names := strings.Split(item.Key, "/")
-			if err := utils.RunCmd("serve %s --plugin-data='%s'", names[len(names)-1], pluginData); err != nil {
-				return err
-			}
+			return utils.WriteTemp(str, func (filePath string) error {
+				names := strings.Split(item.Key, "/")
+				return utils.RunCmd("serve %s --plugin-data='%s'", names[len(names)-1], filePath)
+			})
 		}
 	} else {
 		log.Warnf("Service data not found for undeploy `%s`! Skip...", name)
