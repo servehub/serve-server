@@ -91,24 +91,33 @@ func undeployService(name string, dataPrefix string, consul *consulApi.Client, l
 		return err
 	}
 
+	var outputError error
+
 	if len(pairs) > 0 {
 		for _, item := range pairs {
 			// validate and reserealize json without spaces
 			js := make(map[string]interface{})
 			if err := json.Unmarshal(item.Value, &js); err != nil {
-				return fmt.Errorf("Error on parse deploy data: %v", err)
+				outputError = fmt.Errorf("Error on parse deploy data: %v", err)
+				continue
 			}
+
 			js["purge"] = true
 			str, _ := json.Marshal(js)
 
-			return utils.WriteTemp(str, func (filePath string) error {
+			err = utils.WriteTemp(str, func (filePath string) error {
 				names := strings.Split(item.Key, "/")
 				return utils.RunCmd("serve %s --plugin-data='%s'", names[len(names)-1], filePath)
 			})
+
+			if err != nil {
+				log.Warnf("Service `%s` undeploy %s with error: %v", name, item.Key, err)
+				outputError = err
+			}
 		}
 	} else {
 		log.Warnf("Service data not found for undeploy `%s`! Skip...", name)
 	}
 
-	return nil
+	return outputError
 }
