@@ -23,6 +23,9 @@ handlers:
   webhooks-github:
     token: "XXX"
 
+  webhooks-pingdom:
+    slack-url: "https://hooks.slack.com/services/XXX/YYY/sdfsdf..."
+
   gocd-create-pipeline: {}
 
   create-dashboards:
