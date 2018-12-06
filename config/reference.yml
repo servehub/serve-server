@@ -20,6 +20,8 @@ handlers:
 
   webhooks-bitbucket: {}
 
+  webhooks-gitlab: {}
+
   webhooks-github:
     token: "XXX"
 
