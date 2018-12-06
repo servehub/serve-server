@@ -68,6 +68,10 @@ func (_ WebhooksBitbucket) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus
 					return err
 				}
 			}
+		} else {
+			if err := os.Remove(manifest); err != nil {
+				log.Warnln("Error on removing manifest for closed branch: %s", err)
+			}
 		}
 
 		if closed || oldHash != md5check(manifest) {

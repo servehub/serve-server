@@ -76,6 +76,10 @@ func (_ WebhooksGithub) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 			if err := ioutil.WriteFile(manifest, body, 0644); err != nil {
 				return err
 			}
+		} else {
+			if err := os.Remove(manifest); err != nil {
+				log.Warnln("Error on removing manifest for closed branch: %s", err)
+			}
 		}
 
 		if closed || oldHash != md5check(manifest) {
