@@ -58,6 +58,10 @@ func (_ WebhooksGitlab) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 					return err
 				}
 			}
+		} else {
+			if err := os.Remove(manifest); err != nil {
+				log.Warnln("Error on removing manifest for closed branch: %s", err)
+			}
 		}
 
 		if closed || oldHash != md5check(manifest) {
