@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/url"
 	"os"
+	"time"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/kulikov/go-sbus"
@@ -69,9 +70,7 @@ func (_ WebhooksBitbucket) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus
 				}
 			}
 		} else {
-			if err := os.Remove(manifest); err != nil {
-				log.Warnln("Error on removing manifest for closed branch: %s", err)
-			}
+			os.Chtimes(manifest, time.Now(), time.Now()) // force hash update
 		}
 
 		if closed || oldHash != md5check(manifest) {
@@ -103,5 +102,7 @@ func md5check(file string) string {
 		return ""
 	}
 
-	return fmt.Sprintf("%x", h.Sum(nil))
+	stat, _ := f.Stat()
+
+	return fmt.Sprintf("%x-%d", h.Sum(nil), stat.ModTime().UnixNano())
 }

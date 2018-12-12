@@ -2,9 +2,11 @@ package webhooks
 
 import (
 	"fmt"
-	"github.com/servehub/utils"
 	"os"
 	"strings"
+	"time"
+
+	"github.com/servehub/utils"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/kulikov/go-sbus"
@@ -59,9 +61,7 @@ func (_ WebhooksGitlab) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 				}
 			}
 		} else {
-			if err := os.Remove(manifest); err != nil {
-				log.Warnln("Error on removing manifest for closed branch: %s", err)
-			}
+			os.Chtimes(manifest, time.Now(), time.Now()) // force hash update
 		}
 
 		if closed || oldHash != md5check(manifest) {
