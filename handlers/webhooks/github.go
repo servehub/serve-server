@@ -7,10 +7,10 @@ import (
 	"net/http"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/kulikov/go-sbus"
+	"github.com/servehub/utils"
 
 	"github.com/servehub/utils/gabs"
 
@@ -78,7 +78,9 @@ func (_ WebhooksGithub) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 				return err
 			}
 		} else {
-			os.Chtimes(manifest, time.Now(), time.Now()) // force hash update
+			if _, err := os.Stat(manifest); !os.IsNotExist(err) {
+			  utils.RunCmd("echo '\n # deleted' >> %s", manifest)
+			}
 		}
 
 		if closed || oldHash != md5check(manifest) {

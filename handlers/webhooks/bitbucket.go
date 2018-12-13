@@ -6,7 +6,6 @@ import (
 	"io"
 	"net/url"
 	"os"
-	"time"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/kulikov/go-sbus"
@@ -70,7 +69,9 @@ func (_ WebhooksBitbucket) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus
 				}
 			}
 		} else {
-			os.Chtimes(manifest, time.Now(), time.Now()) // force hash update
+			if _, err := os.Stat(manifest); !os.IsNotExist(err) {
+			  utils.RunCmd("echo '\n # deleted' >> %s", manifest)
+			}
 		}
 
 		if closed || oldHash != md5check(manifest) {
@@ -102,7 +103,5 @@ func md5check(file string) string {
 		return ""
 	}
 
-	stat, _ := f.Stat()
-
-	return fmt.Sprintf("%x-%d", h.Sum(nil), stat.ModTime().UnixNano())
+	return fmt.Sprintf("%x", h.Sum(nil))
 }

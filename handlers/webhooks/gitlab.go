@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/servehub/utils"
 
@@ -61,7 +60,9 @@ func (_ WebhooksGitlab) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 				}
 			}
 		} else {
-			os.Chtimes(manifest, time.Now(), time.Now()) // force hash update
+			if _, err := os.Stat(manifest); !os.IsNotExist(err) {
+			  utils.RunCmd("echo '\n # deleted' >> %s", manifest)
+			}
 		}
 
 		if closed || oldHash != md5check(manifest) {
