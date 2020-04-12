@@ -30,7 +30,7 @@ func main() {
 	kingpin.Parse()
 
 	conf, err := gabs.LoadYamlFile(*configPath)
-	kingpin.FatalIfError(err, "Error on load config file: %s", configPath)
+	kingpin.FatalIfError(err, "Error on load config file: %s", *configPath)
 
 	err = conf.WithFallbackYaml(config.MustAsset("config/reference.yml"))
 	kingpin.FatalIfError(err, "Error on load reference config")

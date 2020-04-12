@@ -20,7 +20,7 @@ func (l *StructuredLogger) NewLogEntry(r *http.Request) middleware.LogEntry {
 			"remote_addr":     r.RemoteAddr,
 			"request_method":  r.Method,
 			"uri":             r.RequestURI,
-			"hostname":        r.Host,
+			"host":            r.Host,
 			"http_user_agent": r.UserAgent(),
 		}),
 	}

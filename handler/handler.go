@@ -22,7 +22,7 @@ func (r *handlerRegestry) Add(name string, handler Handler) {
 	}
 
 	if _, ok := r.handlers[name]; ok {
-		logrus.Fatalln("Handler '%s' dublicate name", name)
+		logrus.Fatalf("Handler '%s' duplicate name", name)
 	}
 
 	r.handlers[name] = handler
@@ -31,7 +31,7 @@ func (r *handlerRegestry) Add(name string, handler Handler) {
 func (r *handlerRegestry) Get(name string) Handler {
 	h, ok := r.handlers[name]
 	if !ok {
-		logrus.Fatalln("Handler '%s' doesn't exist!", name)
+		logrus.Fatalf("Handler '%s' doesn't exist!", name)
 	}
 	return h
 }

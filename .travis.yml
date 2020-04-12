@@ -1,15 +1,13 @@
 sudo: required
 language: go
 
+if: tag IS present
+
 go:
-  - 1.10.x
+  - 1.13.x
 
 services:
   - docker
-
-branches:
-  only:
-    - /^v[\d\.]+$/
 
 env:
   global:
