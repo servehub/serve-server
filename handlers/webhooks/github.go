@@ -1,6 +1,9 @@
 package webhooks
 
 import (
+	"crypto/hmac"
+	"crypto/sha1"
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -26,13 +29,28 @@ type WebhooksGithub struct{}
 
 func (_ WebhooksGithub) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entry) error {
 
+	xhubSecret := []byte(fmt.Sprintf("%s", conf.Path("xhub-secret").Data()))
+
 	bus.Sub("receive-webhook-github", func(msg sbus.Message) error {
 		data, err := gabs.ParseJSON(msg.Data)
 		if err != nil {
 			return err
 		}
 
-		log.Debugln("Receive webhook: ", data.StringIndent("", "  "))
+		log.Debugln("Receive webhook: ", data.Path("request.body").Data())
+
+		if len(xhubSecret) > 0 {
+			xpub := fmt.Sprintf("%s", data.Path("request.headers.X-Hub-Signature.0").Data())
+			mac := hmac.New(sha1.New, xhubSecret)
+
+			mac.Write([]byte(fmt.Sprintf("%s", data.Path("request.body").Data())))
+
+			expected := "sha1=" + hex.EncodeToString(mac.Sum(nil))
+
+			if xpub != expected {
+				return fmt.Errorf("X-Hub-Signature not valid! Expected '" + expected + "', given '" + xpub + "'")
+			}
+		}
 
 		repo := fmt.Sprintf("%s", data.Path("repository.ssh_url").Data())
 		branch := strings.TrimPrefix(fmt.Sprintf("%s", data.Path("ref").Data()), "refs/heads/")
@@ -79,7 +97,7 @@ func (_ WebhooksGithub) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 			}
 		} else {
 			if _, err := os.Stat(manifest); !os.IsNotExist(err) {
-			  utils.RunCmd("echo '\n # deleted' >> %s", manifest)
+				utils.RunCmd("echo '\n # deleted' >> %s", manifest)
 			}
 		}
 

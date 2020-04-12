@@ -30,7 +30,7 @@ func (_ WebhooksGitlab) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 			return err
 		}
 
-		log.Debugln("Receive webhook: ", data.StringIndent("", "  "))
+		log.Debugln("Receive webhook: ", data.Path("request.body").Data())
 
 		repo := fmt.Sprintf("%s", data.Path("project.ssh_url").Data())
 		branch := strings.TrimPrefix(fmt.Sprintf("%s", data.Path("changes.ref").Data()), "refs/heads/")

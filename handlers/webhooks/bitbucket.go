@@ -31,7 +31,7 @@ func (_ WebhooksBitbucket) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus
 			return err
 		}
 
-		log.Debugln("Receive webhook: ", data.StringIndent("", "  "))
+		log.Debugln("Receive webhook: ", data.Path("request.body").Data())
 
 		uri, err := url.Parse(fmt.Sprintf("%s", data.Path("repository.links.html.href").Data()))
 		if err != nil {
