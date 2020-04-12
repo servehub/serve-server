@@ -37,18 +37,18 @@ func (_ WebhooksGithub) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 			return err
 		}
 
-		log.Debugln("Receive webhook: ", data.Path("request.body").Data())
+		log.Debugln("Receive webhook:", msg.Subject)
 
 		if len(xhubSecret) > 0 {
-			xpub := fmt.Sprintf("%s", data.Path("request.headers.X-Hub-Signature.0").Data())
+			xpub := fmt.Sprintf("%s", msg.Meta["headers"].(http.Header).Get("X-Hub-Signature"))
 			mac := hmac.New(sha1.New, xhubSecret)
-
-			mac.Write([]byte(fmt.Sprintf("%s", data.Path("request.body").Data())))
+			mac.Write(msg.Meta["body"].([]byte))
 
 			expected := "sha1=" + hex.EncodeToString(mac.Sum(nil))
-
 			if xpub != expected {
 				return fmt.Errorf("X-Hub-Signature not valid! Expected '" + expected + "', given '" + xpub + "'")
+			} else {
+				log.Info("X-Hub-Signature is valid!")
 			}
 		}
 

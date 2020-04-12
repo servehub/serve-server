@@ -44,16 +44,14 @@ func (_ WebhooksServer) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 		body, _ := ioutil.ReadAll(req.Body)
 		defer req.Body.Close()
 
-		data, err := gabs.ParseJSON(body)
-		if err != nil {
-			http.Error(w, http.StatusText(400), 400)
-			return
-		}
-
-		_, _ = data.Set(req.Header, "request", "headers")
-		_, _ = data.Set(string(body), "request", "body")
-
-		_ = bus.Pub("receive-webhook-"+webhookName.ReplaceAllString(req.URL.Path[1:], "-"), data.Data())
+		_ = bus.PubM(sbus.Message{
+			Subject: "receive-webhook-" + webhookName.ReplaceAllString(req.URL.Path[1:], "-"),
+			Data:    body,
+			Meta: sbus.Meta{
+				"body":    body,
+				"headers": req.Header,
+			},
+		})
 
 		w.WriteHeader(http.StatusAccepted)
 	})

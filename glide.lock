@@ -40,7 +40,7 @@ imports:
   subpackages:
   - coordinate
 - name: github.com/kulikov/go-sbus
-  version: 88ac658ad6f16f4464c458ea42609b8e06bbd308
+  version: b24eca9dd232cde804383fe7695310832c53ab4a
   subpackages:
   - transports
 - name: github.com/mattn/go-colorable
