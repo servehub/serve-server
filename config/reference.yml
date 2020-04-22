@@ -23,7 +23,7 @@ handlers:
   webhooks-gitlab: {}
 
   webhooks-github:
-    xpub-secret: ""
+    xhub-secret: ""
     token: "XXX"
 
   webhooks-pingdom:
