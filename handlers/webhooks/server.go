@@ -36,7 +36,7 @@ func (_ WebhooksServer) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 
 	r.Post("/*", func(w http.ResponseWriter, req *http.Request) {
 		if req.URL.Query().Get("key") != secretKey {
-			log.Errorf("Incorrect secret key in url " + req.URL.Query().Get("key") + "! Required " + secretKey)
+			log.Errorf("Incorrect secret key in url " + req.URL.Query().Get("key") + "!")
 			http.Error(w, http.StatusText(403), 403)
 			return
 		}

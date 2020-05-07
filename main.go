@@ -12,6 +12,7 @@ import (
 	"github.com/cenkalti/backoff"
 	"github.com/kulikov/go-sbus"
 	"github.com/kulikov/go-sbus/transports"
+	"github.com/servehub/utils"
 	"gopkg.in/alecthomas/kingpin.v2"
 
 	"github.com/servehub/utils/gabs"
@@ -57,6 +58,10 @@ func main() {
 
 	golog.SetFlags(0)
 	golog.SetOutput(log.Logger.Writer())
+
+	utils.SetCmdLogger(func(bytes []byte) {
+		log.Infof("%s", bytes)
+	})
 
 	bus := sbus.New(transports.NewInMemory(log), log)
 
