@@ -26,7 +26,7 @@ build-configs:
 
 build: build-configs
 	@echo "==> Build binaries..."
-	go build -v -ldflags "-s -w -X main.version=${VERSION}" -o ${DEST}/serve-server main.go
+	go build -v -trimpath -ldflags "-s -w -X main.version=${VERSION}" -o ${DEST}/serve-server main.go
 
 install: test build
 	@echo "==> Copy binaries to \$GOPATH/bin/..."
