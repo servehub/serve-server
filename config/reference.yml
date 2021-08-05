@@ -3,7 +3,9 @@ logging:
   formatter: text
 
 handlers:
-  serve-undeploy-service: {}
+  serve-undeploy-service:
+    env: qa
+    zone: qa
 
   consul-remove-outdated:
     outdated-prefix: "services/outdated/"

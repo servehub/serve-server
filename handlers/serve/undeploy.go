@@ -13,15 +13,15 @@ import (
 )
 
 func init() {
-	handler.HandlerRegestry.Add("serve-undeploy-service", &ServeUndeployService{})
+	handler.HandlerRegestry.Add("serve-undeploy-service", &UndeployService{})
 }
 
 /**
  * Undeploy service after branch remove
  */
-type ServeUndeployService struct{}
+type UndeployService struct{}
 
-func (_ ServeUndeployService) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entry) error {
+func (_ UndeployService) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entry) error {
 	bus.Sub("manifest-changed", func(cmd sbus.Message) error {
 		m := &models.ManifestChanged{}
 		if err := cmd.Unmarshal(m); err != nil {
@@ -30,8 +30,10 @@ func (_ ServeUndeployService) Run(bus *sbus.Sbus, conf *gabs.Container, log *log
 
 		if m.Purge {
 			return utils.RunCmd(
-				"serve outdated --manifest=%s --branch=%s",
+				"serve outdated --manifest=%s --env=%s --zone=%s --branch=%s",
 				m.Manifest,
+				conf.Path("env").Data(),
+				conf.Path("zone").Data(),
 				m.Branch,
 			)
 		}
