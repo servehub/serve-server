@@ -33,7 +33,7 @@ func (_ GithubNotify) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entr
 		req.Header.Set("Content-type", "application/json")
 
 		for h, v := range msg.Meta["headers"].(http.Header) {
-			if strings.HasPrefix(h, "X-GitHub-") || strings.HasPrefix(h, "X-Hub-") {
+			if strings.HasPrefix(strings.ToLower(h), "x-github-") || strings.HasPrefix(strings.ToLower(h), "x-hub-") {
 				req.Header.Set(h, v[0])
 			}
 		}
