@@ -6,10 +6,10 @@ import (
 	"net/http"
 
 	"github.com/Sirupsen/logrus"
-	"github.com/kulikov/go-sbus"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/render"
+	"github.com/kulikov/go-sbus"
 
 	"github.com/servehub/serve-server/handler"
 	"github.com/servehub/utils/gabs"
@@ -26,7 +26,7 @@ func (_ DebugHandler) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entr
 	r.Use(middleware.Recoverer)
 	r.Use(render.SetContentType(render.ContentTypeJSON))
 
-	r.Post("/sbus/pub/:subject", func(w http.ResponseWriter, req *http.Request) {
+	r.Post("/sbus/pub/{subject}", func(w http.ResponseWriter, req *http.Request) {
 		body, _ := ioutil.ReadAll(req.Body)
 		defer req.Body.Close()
 
