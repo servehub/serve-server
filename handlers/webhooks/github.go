@@ -65,6 +65,12 @@ func (_ WebhooksGithub) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 		manifest := tmp + "/manifest.yml"
 		oldHash := md5check(manifest)
 
+		bus.Pub("github-code-updated", models.CodeUpdated{
+			Repo:     repo,
+			Branch:   branch,
+			Commit:   data.Path("after").String(),
+		})
+
 		if !closed {
 			fileUrl := fmt.Sprintf("https://api.github.com/repos/%s/contents/manifest.yml?ref=%s", fullName, branch)
 			req, _ := http.NewRequest("GET", fileUrl, nil)

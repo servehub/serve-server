@@ -2,7 +2,6 @@ package gocd
 
 import (
 	"bytes"
-	"crypto/tls"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -21,10 +20,6 @@ func init() {
 }
 
 type GithubNotify struct{}
-
-var httpClient = &http.Client{Transport: &http.Transport{
-	TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-}}
 
 func (_ GithubNotify) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entry) error {
 

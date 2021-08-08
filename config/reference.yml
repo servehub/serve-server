@@ -36,6 +36,13 @@ handlers:
   gocd-github-notify:
     notify-url: "http://go.mysite.com/go/api/webhooks/github/notify"
 
+  gocd-run-pipeline:
+    gocd-url: "https://go.mysite.com"
+
+    pipelines:
+      - repo: git@github.com:test/test.git
+        pipeline: my-pipeline-name
+
   create-dashboards:
     env: dev
 
