@@ -35,9 +35,10 @@ func (_ UpdateMonitoringAlerts) Run(bus *sbus.Sbus, conf *gabs.Container, log *l
 		}
 
 		return utils.RunCmd(
-			"serve monitoring --manifest=%s --env=%s",
+			"serve monitoring --manifest=%s --env=%s --zone=%s",
 			m.Manifest,
 			conf.Path("env").Data(),
+			conf.Path("zone").Data(),
 		)
 	})
 

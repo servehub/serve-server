@@ -48,3 +48,4 @@ handlers:
 
   update-monitoring-alerts:
     env: dev
+    zone: dev
