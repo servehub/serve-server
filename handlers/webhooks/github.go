@@ -68,7 +68,7 @@ func (_ WebhooksGithub) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 		bus.Pub("github-code-updated", models.CodeUpdated{
 			Repo:     repo,
 			Branch:   branch,
-			Commit:   data.Path("after").String(),
+			Commit:   fmt.Sprintf("%s", data.Path("after").Data()),
 		})
 
 		if !closed {
