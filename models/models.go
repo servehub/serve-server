@@ -8,7 +8,8 @@ type ManifestChanged struct {
 }
 
 type CodeUpdated struct {
-	Repo     string `json:"repo"`
-	Branch   string `json:"branch"`
-	Commit   string `json:"commit"`
+	Repo       string `json:"repo"`
+	Branch     string `json:"branch"`
+	Commit     string `json:"commit"`
+	PrevCommit string `json:"prevCommit"`
 }

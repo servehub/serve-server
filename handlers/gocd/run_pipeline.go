@@ -33,7 +33,7 @@ func (_ RunPipeline) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entry
 		}
 
 		gocdUrl := fmt.Sprintf("%s", conf.Path("gocd-url").Data())
-		body := fmt.Sprintf(`{"environment_variables": [{"name": "BRANCH", "value": "%s"}, {"name": "COMMIT", "value": "%s"}], "update_materials_before_scheduling": true}`, update.Branch, update.Commit)
+		body := fmt.Sprintf(`{"environment_variables": [{"name": "BRANCH", "value": "%s"}, {"name": "COMMIT", "value": "%s"}, {"name": "PREVIOUS_COMMIT", "value": "%s"}], "update_materials_before_scheduling": true}`, update.Branch, update.Commit, update.PrevCommit)
 
 		pipelines, _ := conf.Path("pipelines").Children()
 

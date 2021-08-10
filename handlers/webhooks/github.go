@@ -66,9 +66,10 @@ func (_ WebhooksGithub) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 		oldHash := md5check(manifest)
 
 		bus.Pub("github-code-updated", models.CodeUpdated{
-			Repo:     repo,
-			Branch:   branch,
-			Commit:   fmt.Sprintf("%s", data.Path("after").Data()),
+			Repo:       repo,
+			Branch:     branch,
+			Commit:     fmt.Sprintf("%s", data.Path("after").Data()),
+			PrevCommit: fmt.Sprintf("%s", data.Path("before").Data()),
 		})
 
 		if !closed {
