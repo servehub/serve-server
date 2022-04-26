@@ -22,7 +22,7 @@ clean:
 
 build-configs:
 	@echo "==> Build configs..."
-	${GOPATH}/bin/go-bindata -pkg config -o config/reference.go config/*.yml
+	${GOPATH}/bin/go-bindata -pkg config -o config/reference.go config/
 
 build: build-configs
 	@echo "==> Build binaries..."
