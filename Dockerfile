@@ -1,4 +1,4 @@
-FROM alpine:3.5
+FROM amd64/alpine:3.15
 
 RUN apk add --update --no-cache \
       ca-certificates \

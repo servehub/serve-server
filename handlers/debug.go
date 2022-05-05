@@ -38,7 +38,7 @@ func (_ DebugHandler) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entr
 
 		bus.Pub(chi.URLParam(req, "subject"), data.Data())
 
-		w.WriteHeader(http.StatusAccepted)
+		w.WriteHeader(http.StatusOK)
 	})
 
 	return http.ListenAndServe(fmt.Sprintf("%v", conf.Path("listen").Data()), r)

@@ -108,7 +108,9 @@ func (_ WebhooksGithub) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 			}
 		}
 
-		if closed || oldHash != md5check(manifest) {
+		newHash := md5check(manifest)
+
+		if newHash != "" && (closed || oldHash != newHash) {
 			return bus.Pub("manifest-changed", models.ManifestChanged{
 				Manifest: manifest,
 				Repo:     repo,

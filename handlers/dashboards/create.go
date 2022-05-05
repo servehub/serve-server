@@ -30,6 +30,10 @@ func (_ CreateDashboards) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.
 			return fmt.Errorf("Error on unmarshal manifestChanged: %v", err)
 		}
 
+		if m.Branch != "master" {
+			return nil
+		}
+
 		return utils.RunCmd(
 			"serve dashboard --manifest=%s --env=%s --branch=%s --purge=%v",
 			m.Manifest,
