@@ -87,6 +87,7 @@ func (_ RunPipeline) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entry
 						tree.Set(pipelineName, "name")
 						tree.Set(scheduleBodyTree.Path("environment_variables").Data(), "environment_variables")
 
+						newp.Set(tree.Path("group").Data(), "group")
 						newp.Set(tree.Data(), "pipeline")
 
 						err = goCdCreate(pipelineName, "copper", gocdUrl, newp.String(), map[string]string{"Accept": "application/vnd.go.cd.v11+json"})
