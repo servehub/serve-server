@@ -87,6 +87,10 @@ func (_ RunPipeline) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entry
 						tree.Set(pipelineName, "name")
 						tree.Set(scheduleBodyTree.Path("environment_variables").Data(), "environment_variables")
 
+						mat, _ := tree.ArrayElementP(0, "materials")
+						mat.Set(update.Branch, "attributes", "branch")
+						tree.Path("materials").SetIndex(mat.Data(), 0)
+
 						newp.Set(tree.Path("group").Data(), "group")
 						newp.Set(tree.Data(), "pipeline")
 
