@@ -70,6 +70,7 @@ func (_ WebhooksGithub) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 			Branch:     branch,
 			Commit:     fmt.Sprintf("%s", data.Path("after").Data()),
 			PrevCommit: fmt.Sprintf("%s", data.Path("before").Data()),
+			Purge:      closed,
 		})
 
 		if !closed {

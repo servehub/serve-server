@@ -12,4 +12,5 @@ type CodeUpdated struct {
 	Branch     string `json:"branch"`
 	Commit     string `json:"commit"`
 	PrevCommit string `json:"prevCommit"`
+	Purge      bool   `json:"purge,string"`
 }

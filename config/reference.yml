@@ -38,6 +38,7 @@ handlers:
 
   gocd-run-pipeline:
     gocd-url: "https://go.mysite.com"
+    gocd-env: "default"
 
     pipelines:
       - repo: git@github.com:test/test.git

@@ -38,14 +38,15 @@ func (_ RunPipeline) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entry
 		}
 
 		if update.Commit == "0000000000000000000000000000000000000000" {
-			update.Commit = "master"
+			update.Commit = "origin/master"
 		}
 
 		if update.PrevCommit == "0000000000000000000000000000000000000000" {
-			update.PrevCommit = "master"
+			update.PrevCommit = "origin/master"
 		}
 
 		gocdUrl := fmt.Sprintf("%s", conf.Path("gocd-url").Data())
+		gocdEnv := fmt.Sprintf("%s", conf.Path("gocd-env").Data())
 
 		scheduleBody := fmt.Sprintf(
 			`{"environment_variables": [{"name": "BRANCH", "value": "%s"}, {"name": "COMMIT", "value": "%s"}, {"name": "PREVIOUS_COMMIT", "value": "%s"}], "update_materials_before_scheduling": true}`,
@@ -68,7 +69,7 @@ func (_ RunPipeline) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entry
 
 					exist, _ := goCdRequest("GET", fmt.Sprintf("%s/go/api/admin/pipelines/%s", gocdUrl, pipelineName), "", map[string]string{"Accept": "application/vnd.go.cd.v11+json"})
 
-					if exist.StatusCode == http.StatusNotFound {
+					if exist.StatusCode == http.StatusNotFound && !update.Purge {
 						parentResp, err := goCdRequest("GET", fmt.Sprintf("%s/go/api/admin/pipelines/%s", gocdUrl, pipeline.Path("pipeline").Data()), "", map[string]string{"Accept": "application/vnd.go.cd.v11+json"})
 						if err != nil {
 							return fmt.Errorf("Error on get parent pipeline: %v", err)
@@ -94,10 +95,14 @@ func (_ RunPipeline) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entry
 						newp.Set(tree.Path("group").Data(), "group")
 						newp.Set(tree.Data(), "pipeline")
 
-						err = goCdCreate(pipelineName, "copper", gocdUrl, newp.String(), map[string]string{"Accept": "application/vnd.go.cd.v11+json"})
+						err = goCdCreate(pipelineName, gocdEnv, gocdUrl, newp.String(), map[string]string{"Accept": "application/vnd.go.cd.v11+json"})
 						if err != nil {
 							return fmt.Errorf("Error on create pipeline: %v", err)
 						}
+					} else if update.Purge {
+						// todo: mark all running apps as outdated
+						goCdDelete(pipelineName, gocdEnv, gocdUrl, map[string]string{"Accept": "application/vnd.go.cd.v11+json"})
+						continue
 					}
 				} else if update.Branch != "master" {
 					log.Printf("Skip branch %s", update.Branch)
