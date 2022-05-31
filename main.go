@@ -81,7 +81,7 @@ func main() {
 			hndr := handler.HandlerRegestry.Get(handlerName)
 
 			go func(hndr handler.Handler, handlerConf *gabs.Container, log *logrus.Entry, handlerName string) {
-				log.WithField("config", handlerConf.Data()).Infof("Starting `%s`...", handlerName)
+				log.Infof("Starting `%s`...", handlerName)
 
 				err := backoff.RetryNotify(func() error {
 					return hndr.Run(bus, handlerConf, log)

@@ -42,6 +42,6 @@ bump-tag:
 
 release: dist
 	@echo "==> Build and publish new docker image..."
-	docker build -t ${TAG}:latest -t ${TAG}:${VERSION} .
+	docker build --platform linux/amd64 -t ${TAG}:latest -t ${TAG}:${VERSION} .
 	docker push ${TAG}:${VERSION}
 	docker push ${TAG}:latest
