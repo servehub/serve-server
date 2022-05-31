@@ -12,6 +12,7 @@ handlers:
     service-data-prefix: "services/data/"
     check-interval: 15s
     consul: 127.0.0.1:8500
+    cleanup-branches: false
 
   debug-handler:
     listen: ":8013"
