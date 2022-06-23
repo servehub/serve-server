@@ -280,9 +280,9 @@ var goCdRequest = func(method string, url string, body string, headers map[strin
 	creds := &goCdCredents{}
 	json.Unmarshal(data, creds)
 
-	req.SetBasicAuth(creds.Login, creds.Password)
-
 	log.Printf(" --> %s %s:\n%s\n\n", method, url, body)
+
+	req.SetBasicAuth(creds.Login, creds.Password)
 
 	resp, err := httpClient.Do(req)
 	if err != nil {
