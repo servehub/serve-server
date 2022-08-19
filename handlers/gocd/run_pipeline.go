@@ -63,7 +63,7 @@ func (_ RunPipeline) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entry
 
 				pipelineName := fmt.Sprintf("%s", pipeline.Path("pipeline").Data())
 
-				if strings.HasPrefix(update.Branch, "feature/") || strings.HasPrefix(update.Branch, "feature-") {
+				if m, _ := regexp.MatchString("^(feature|fix|hotfix)[-_].+", update.Branch); m {
 					featureName := strings.ToLower(pipelineNameRegex.ReplaceAllString(strings.TrimPrefix(strings.TrimPrefix(update.Branch, "feature-"), "feature/"), "-"))
 					pipelineName = strings.ToLower(pipelineNameRegex.ReplaceAllString(fmt.Sprintf("%s-%s", pipelineName, featureName), "-"))
 
