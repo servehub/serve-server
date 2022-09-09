@@ -44,6 +44,9 @@ handlers:
     pipelines:
       - repo: git@github.com:test/test.git
         pipeline: my-pipeline-name
+        feature:
+          branches: ["^feature[-/].+", "^fix[-/].+", "^hotfix[-/].+"]
+          template: "pipeline-template-name"
 
   create-dashboards:
     env: dev

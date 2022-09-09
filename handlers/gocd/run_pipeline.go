@@ -63,7 +63,7 @@ func (_ RunPipeline) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entry
 
 				pipelineName := fmt.Sprintf("%s", pipeline.Path("pipeline").Data())
 
-				if m, _ := regexp.MatchString("^(feature|fix|hotfix)[-_].+", update.Branch); m {
+				if matchFeatureBranch(update.Branch, pipeline.Path("feature.branches")) {
 					featureName := strings.ToLower(pipelineNameRegex.ReplaceAllString(strings.TrimPrefix(strings.TrimPrefix(update.Branch, "feature-"), "feature/"), "-"))
 					pipelineName = strings.ToLower(pipelineNameRegex.ReplaceAllString(fmt.Sprintf("%s-%s", pipelineName, featureName), "-"))
 
@@ -86,11 +86,14 @@ func (_ RunPipeline) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entry
 						newp := gabs.New()
 
 						tree.Set(pipelineName, "name")
+						tree.Set(pipeline.Path("feature.template").Data(), "template")
 						tree.Set(scheduleBodyTree.Path("environment_variables").Data(), "environment_variables")
 
 						mat, _ := tree.ArrayElementP(0, "materials")
 						mat.Set(update.Branch, "attributes", "branch")
 						tree.Path("materials").SetIndex(mat.Data(), 0)
+
+						tree.Delete("stages")
 
 						newp.Set(tree.Path("group").Data(), "group")
 						newp.Set(tree.Data(), "pipeline")
@@ -104,6 +107,7 @@ func (_ RunPipeline) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entry
 						goCdDelete(pipelineName, gocdEnv, gocdUrl, map[string]string{"Accept": "application/vnd.go.cd.v11+json"})
 						continue
 					}
+
 				} else if update.Branch != "master" {
 					log.Printf("Skip branch %s", update.Branch)
 					continue
@@ -127,6 +131,21 @@ type goCdCredents struct {
 var httpClient = &http.Client{Transport: &http.Transport{
 	TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 }}
+
+func matchFeatureBranch(branch string, allowedBranches *gabs.Container) bool {
+	if children, err := allowedBranches.Children(); err == nil {
+		for _, b := range children {
+			re := b.Data().(string)
+			if re == "*" || re == branch {
+				return true
+			} else if m, _ := regexp.MatchString(re, branch); m {
+				return true
+			}
+		}
+	}
+
+	return false
+}
 
 func goCdCreate(name string, env string, resource string, body string, headers map[string]string) error {
 	if resp, err := goCdRequest("POST", resource+"/go/api/admin/pipelines", body, headers); err != nil {
