@@ -55,7 +55,6 @@ func (_ RunPipeline) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entry
 			update.PrevCommit,
 		)
 
-		scheduleBodyTree, _ := gabs.ParseJSON([]byte(scheduleBody))
 		pipelinesForRun, _ := conf.Path("pipelines").Children()
 
 		for _, pipeline := range pipelinesForRun {
@@ -87,7 +86,9 @@ func (_ RunPipeline) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entry
 
 						tree.Set(pipelineName, "name")
 						tree.Set(pipeline.Path("feature.template").Data(), "template")
-						tree.Set(scheduleBodyTree.Path("environment_variables").Data(), "environment_variables")
+
+						envsTree, _ := gabs.ParseJSON([]byte(fmt.Sprintf(`[{"name": "BRANCH", "value": "%s"}]`, update.Branch)))
+						tree.Set(envsTree.Data(), "environment_variables")
 
 						mat, _ := tree.ArrayElementP(0, "materials")
 						mat.Set(update.Branch, "attributes", "branch")
