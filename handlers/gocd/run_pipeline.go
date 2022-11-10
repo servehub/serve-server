@@ -87,7 +87,7 @@ func (_ RunPipeline) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entry
 						tree.Set(pipelineName, "name")
 						tree.Set(pipeline.Path("feature.template").Data(), "template")
 
-						envsTree, _ := gabs.ParseJSON([]byte(fmt.Sprintf(`[{"name": "BRANCH", "value": "%s"}]`, update.Branch)))
+						envsTree, _ := gabs.ParseJSON([]byte(fmt.Sprintf(`[{"name": "BRANCH", "value": "%s"}, {"name": "COMMIT", "value": "%s"}, {"name": "PREVIOUS_COMMIT", "value": "%s"}]`, update.Branch, update.Branch, update.PrevCommit)))
 						tree.Set(envsTree.Data(), "environment_variables")
 
 						mat, _ := tree.ArrayElementP(0, "materials")
