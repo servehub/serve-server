@@ -12,9 +12,7 @@ test:
 
 deps:
 	@echo "==> Install dependencies..."
-	go get github.com/jteeuwen/go-bindata/...
-	go get github.com/Masterminds/glide
-	glide i -v
+	go install -a -v github.com/go-bindata/go-bindata/...@latest
 
 clean:
 	@echo "==> Cleanup old binaries..."

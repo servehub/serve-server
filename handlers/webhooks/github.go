@@ -66,7 +66,7 @@ func (_ WebhooksGithub) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 		repo := fmt.Sprintf("%s", data.Path("repository.ssh_url").Data())
 		branch := strings.TrimPrefix(fmt.Sprintf("%s", data.Path("ref").Data()), "refs/heads/")
 		fullName := fmt.Sprintf("%s", data.Path("repository.full_name").Data())
-		closed := "true" == fmt.Sprintf("%v", data.Path("deleted").Data())
+		deleted := "true" == fmt.Sprintf("%v", data.Path("deleted").Data())
 
 		tmp := fmt.Sprintf("/tmp/serve/manifests/%s/%s", fullName, branch)
 		if err := os.MkdirAll(tmp, os.ModePerm); err != nil {
@@ -81,10 +81,10 @@ func (_ WebhooksGithub) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 			Branch:     branch,
 			Commit:     fmt.Sprintf("%s", data.Path("after").Data()),
 			PrevCommit: fmt.Sprintf("%s", data.Path("before").Data()),
-			Purge:      closed,
+			Purge:      deleted,
 		})
 
-		if !closed {
+		if !deleted {
 			fileUrl := fmt.Sprintf("https://api.github.com/repos/%s/contents/manifest.yml?ref=%s", fullName, branch)
 			req, _ := http.NewRequest("GET", fileUrl, nil)
 
@@ -122,12 +122,12 @@ func (_ WebhooksGithub) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 
 		newHash := md5check(manifest)
 
-		if newHash != "" && (closed || oldHash != newHash) {
+		if newHash != "" && (deleted || oldHash != newHash) {
 			return bus.Pub("manifest-changed", models.ManifestChanged{
 				Manifest: manifest,
 				Repo:     repo,
 				Branch:   branch,
-				Purge:    closed,
+				Purge:    deleted,
 			})
 		} else {
 			log.Debugln("Manifest not changed")
@@ -172,10 +172,6 @@ func (_ WebhooksGithub) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 }
 
 func SendStatus(accessToken string, repo string, ref string, state string, description string, statusContext string, targetUrl string) error {
-	if !IsValidState(state) {
-		return fmt.Errorf("`%s` is not a valid value for a state", state)
-	}
-
 	rp := strings.SplitN(repo, ":", 2)
 	rps := strings.SplitN(rp[1], "/", 2)
 
@@ -196,13 +192,5 @@ func SendStatus(accessToken string, repo string, ref string, state string, descr
 	return backoff.Retry(func() error {
 		_, _, err := client.Repositories.CreateStatus(context.Background(), rps[0], strings.TrimSuffix(rps[1], ".git"), ref, input)
 		return err
-	}, backoff.WithMaxRetries(backoff.NewExponentialBackOff(), 1))
-}
-
-func IsValidState(state string) bool {
-	switch state {
-	case "error", "failure", "pending", "success":
-		return true
-	}
-	return false
+	}, backoff.WithMaxRetries(backoff.NewExponentialBackOff(), 3))
 }
