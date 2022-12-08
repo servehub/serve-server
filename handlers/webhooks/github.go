@@ -142,7 +142,7 @@ func (_ WebhooksGithub) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 
 		title := fmt.Sprintf("%s", data.Path("pull_request.title").Data())
 
-		match, _ := regexp.MatchString("((Revert \")|)(([A-z0-9]{2,10}-\\d+)) .+$", title)
+		match, _ := regexp.MatchString("^((Revert \")|)(([A-z0-9]{2,10}-\\d+)) .+$", title)
 
 		pullReqState := "failure"
 		pullReqDesc := "Failed! Pull request name doesn't follow naming conventions!"
