@@ -52,7 +52,7 @@ func (_ WebhooksGithub) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 			}
 		}
 
-		return bus.Pub(fmt.Sprintf("receive-webhook-%s", msg.Meta["headers"].(http.Header).Get("X-GitHub-Event")), msg.Data)
+		return bus.Pub(fmt.Sprintf("receive-webhook-github-%s", msg.Meta["headers"].(http.Header).Get("X-GitHub-Event")), msg.Data)
 	})
 
 	bus.Sub("receive-webhook-github-push", func(msg sbus.Message) error {
