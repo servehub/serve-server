@@ -158,7 +158,7 @@ func (_ WebhooksGithub) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 
 		return SendStatus(githubToken,
 			fmt.Sprintf("%s", data.Path("repository.ssh_url").Data()),
-			fmt.Sprintf("%s", data.Path("head.sha").Data()),
+			fmt.Sprintf("%s", data.Path("pull_request.head.sha").Data()),
 			pullReqState,
 			pullReqDesc,
 			"Naming conventions / Pull request",
