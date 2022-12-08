@@ -1,24 +1,28 @@
 package webhooks
 
 import (
+	"context"
 	"crypto/hmac"
 	"crypto/sha1"
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"github.com/cenkalti/backoff"
 	"io/ioutil"
 	"net/http"
 	"os"
+	"regexp"
 	"strings"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/kulikov/go-sbus"
 	"github.com/servehub/utils"
 
-	"github.com/servehub/utils/gabs"
-
+	"github.com/google/go-github/v44/github"
 	"github.com/servehub/serve-server/handler"
 	"github.com/servehub/serve-server/models"
+	"github.com/servehub/utils/gabs"
+	"golang.org/x/oauth2"
 )
 
 func init() {
@@ -30,13 +34,9 @@ type WebhooksGithub struct{}
 func (_ WebhooksGithub) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.Entry) error {
 
 	xhubSecret := []byte(fmt.Sprintf("%s", conf.Path("xhub-secret").Data()))
+	githubToken := fmt.Sprintf("%s", conf.Path("token").Data())
 
 	bus.Sub("receive-webhook-github", func(msg sbus.Message) error {
-		data, err := gabs.ParseJSON(msg.Data)
-		if err != nil {
-			return err
-		}
-
 		log.Debugln("Receive webhook:", msg.Subject)
 
 		if len(xhubSecret) > 0 {
@@ -50,6 +50,17 @@ func (_ WebhooksGithub) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 			} else {
 				log.Info("X-Hub-Signature is valid!")
 			}
+		}
+
+		bus.Pub(fmt.Sprintf("receive-webhook-%s", msg.Meta["headers"].(http.Header).Get("X-GitHub-Event")), msg)
+
+		return nil
+	})
+
+	bus.Sub("receive-webhook-github-push", func(msg sbus.Message) error {
+		data, err := gabs.ParseJSON(msg.Data)
+		if err != nil {
+			return err
 		}
 
 		repo := fmt.Sprintf("%s", data.Path("repository.ssh_url").Data())
@@ -125,5 +136,73 @@ func (_ WebhooksGithub) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 		return nil
 	})
 
+	bus.Sub("receive-webhook-github-pull_request", func(msg sbus.Message) error {
+		data, err := gabs.ParseJSON(msg.Data)
+		if err != nil {
+			return err
+		}
+
+		title := fmt.Sprintf("%s", data.Path("pull_request.title").Data())
+
+		match, _ := regexp.MatchString("((Revert \")|)(([A-z0-9]{2,10}-\\d+)) .+$", title)
+
+		pullReqState := "failure"
+		pullReqDesc := "Failed! Pull request name doesn't follow naming conventions!"
+
+		if match {
+			pullReqState = "success"
+			pullReqDesc = "Success!"
+		}
+
+		if githubToken == "" {
+			return errors.New("`GITHUB_TOKEN` is required")
+		}
+
+		return SendStatus(githubToken,
+			fmt.Sprintf("%s", data.Path("repository.ssh_url").Data()),
+			fmt.Sprintf("%s", data.Path("after").Data()),
+			pullReqState,
+			pullReqDesc,
+			"Naming conventions / Pull request",
+			"",
+		)
+	})
+
 	return nil
+}
+
+func SendStatus(accessToken string, repo string, ref string, state string, description string, statusContext string, targetUrl string) error {
+	if !IsValidState(state) {
+		return fmt.Errorf("`%s` is not a valid value for a state", state)
+	}
+
+	rp := strings.SplitN(repo, ":", 2)
+	rps := strings.SplitN(rp[1], "/", 2)
+
+	input := &github.RepoStatus{
+		State:       github.String(state),
+		Description: github.String(description),
+		Context:     github.String(statusContext),
+	}
+
+	fmt.Printf("%v", input)
+	fmt.Printf("%v", ref)
+
+	client := github.NewClient(
+		oauth2.NewClient(
+			context.Background(),
+			oauth2.StaticTokenSource(&oauth2.Token{AccessToken: accessToken})))
+
+	return backoff.Retry(func() error {
+		_, _, err := client.Repositories.CreateStatus(context.Background(), rps[0], strings.TrimSuffix(rps[1], ".git"), ref, input)
+		return err
+	}, backoff.WithMaxRetries(backoff.NewExponentialBackOff(), 1))
+}
+
+func IsValidState(state string) bool {
+	switch state {
+	case "error", "failure", "pending", "success":
+		return true
+	}
+	return false
 }
