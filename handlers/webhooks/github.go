@@ -52,9 +52,7 @@ func (_ WebhooksGithub) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 			}
 		}
 
-		bus.Pub(fmt.Sprintf("receive-webhook-%s", msg.Meta["headers"].(http.Header).Get("X-GitHub-Event")), msg)
-
-		return nil
+		return bus.Pub(fmt.Sprintf("receive-webhook-%s", msg.Meta["headers"].(http.Header).Get("X-GitHub-Event")), msg)
 	})
 
 	bus.Sub("receive-webhook-github-push", func(msg sbus.Message) error {
@@ -160,7 +158,7 @@ func (_ WebhooksGithub) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.En
 
 		return SendStatus(githubToken,
 			fmt.Sprintf("%s", data.Path("repository.ssh_url").Data()),
-			fmt.Sprintf("%s", data.Path("after").Data()),
+			fmt.Sprintf("%s", data.Path("head.sha").Data()),
 			pullReqState,
 			pullReqDesc,
 			"Naming conventions / Pull request",
