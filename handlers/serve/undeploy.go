@@ -29,6 +29,12 @@ func (_ UndeployService) Run(bus *sbus.Sbus, conf *gabs.Container, log *logrus.E
 		}
 
 		if m.Purge {
+			_ = utils.RunCmd(
+				"serve build --plugin=build.docker-image --manifest=%s --branch=%s --purge=true",
+				m.Manifest,
+				m.Branch,
+			)
+
 			return utils.RunCmd(
 				"serve outdated --manifest=%s --env=%s --zone=%s --branch=%s",
 				m.Manifest,
